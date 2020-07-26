@@ -1,26 +1,30 @@
-import React from "./node_modules/react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
+const Home = ({ navigation, _fetchData }) => {
 
-const Home = () => {
+  React.useEffect(() => {
+    _fetchData();
+  }, [])
+
 
   return (
-    <View style={styles.container}>
-      <TouchableHighlight
-        style={styles.buttons}
-        underlayColor={"black"}
-      //   onPress={() => navigate("AddCard")}
-      >
-        <Text style={styles.textBtns}>Dodaj wizytowke</Text>
-      </TouchableHighlight>
-      <TouchableHighlight
-        style={styles.buttons}
-        underlayColor={"black"}
-      //   onPress={() => navigate("DisplayCard")}
-      >
-        <Text style={styles.textBtns}>Zobacz wszystkie wizytowki</Text>
-      </TouchableHighlight>
-    </View>
+      <View style={styles.container}>
+        <TouchableHighlight
+          style={styles.buttons}
+          underlayColor={"black"}
+          onPress={() => navigation.navigate("Dodaj wizytówke")}
+        >
+          <Text style={styles.textBtns}>Dodaj wizytowke</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={styles.buttons}
+          underlayColor={"black"}
+          onPress={() => navigation.navigate("Strona główna")}
+        >
+          <Text style={styles.textBtns}>Zobacz wszystkie wizytowki</Text>
+        </TouchableHighlight>
+      </View>
   );
 }
 

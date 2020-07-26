@@ -1,13 +1,15 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AsyncStorage from '@react-native-community/async-storage';
 import Home from "./components/Home";
 import AddCard from "./components/AddCard";
-const Stack = createStackNavigator();
+
+const Tab = createBottomTabNavigator();
 
 function App() {
-  const [card, setCard] = React.useState({
+  const [singleCard, setSingleCard] = React.useState({
     name: "",
     street: "",
     postalCode: "",
@@ -16,15 +18,57 @@ function App() {
     email: "",
     nip: ""
   });
+  const [cards, setCards] = React.useState([])
   const [error, setError] = React.useState("");
+
+  _fetchData = async () => {
+
+    try {
+      const allCards = [];
+      const keys = await AsyncStorage.getAllKeys();
+      const items = await AsyncStorage.multiGet(keys, (err, stores) => {
+        stores.map((result, i, store) => {
+          // let key = store[i][0];
+          let value = store[i][1];
+          let parsedValue = JSON.parse(value);
+          allCards.push(parsedValue);
+        })
+      })
+      console.log(allCards)
+      setCards(allCards)
+    } 
+    catch (error) {
+      console.log(error);
+      setError(error);
+    }
+  };
+
+  React.useEffect(() => {
+    console.log(singleCard)
+  }, [singleCard])
+
+  //   _addData = async () => {
+
+  //   try {
+  //     await AsyncStorage.setItem(this.state.name, JSON.stringify(data))
+  //     alert("Twoja wizytowka zostala zapisana");
+  //   } catch (error) {
+  //     console.log(error);
+  //     setError(error);
+  //   }
+  // };
   
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AddCard">
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="AddCard" component={AddCard} />
-      </Stack.Navigator>
+        <Tab.Navigator initialRouteName="Strona główna">
+          <Tab.Screen name="Strona główna" >
+            {props => <Home{...props} _fetchData={_fetchData}/>}
+          </Tab.Screen>
+          <Tab.Screen name="Dodaj wizytówke">
+            {props => <AddCard {...props} singleCard={singleCard} setSingleCard={setSingleCard} error={error}/>}
+          </Tab.Screen>
+        </Tab.Navigator>
     </NavigationContainer>
   );
 }

@@ -1,20 +1,9 @@
-import React, { Component } from "./node_modules/react";
+import React from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 
- const AddCard = () => {
+ const AddCard = ({singleCard, setSingleCard, error}) => {
 
-
-//   _addData = async () => {
-//     const { error, ...data } = this.state;
-
-//     try {
-//       await AsyncStorage.setItem(this.state.name, JSON.stringify(data))
-//         .then(alert("Twoja wizytowka zostala zapisana"));
-//     } catch (error) {
-//       this.setState({ error });
-//     }
-//   };
 
     return (
       <View style={styles.container}>
@@ -22,53 +11,53 @@ import { AsyncStorage } from "react-native";
           <Text style={styles.inputsText}>Imie/Nazwa firmy:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={name => this.setState({ name })}
+            onChangeText={name => setSingleCard({...singleCard, name })}
           />
         </View>
         <View style={styles.inputsContainer}>
           <Text style={styles.inputsText}>Ulica:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={street => this.setState({ street })}
+            onChangeText={street => setSingleCard({...singleCard, street })}
           />
         </View>
         <View style={styles.inputsContainer}>
           <Text style={styles.inputsText}>Kod pocztowy:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={postalCode => this.setState({ postalCode })}
+            onChangeText={postalCode => setSingleCard({...singleCard, postalCode })}
           />
         </View>
         <View style={styles.inputsContainer}>
           <Text style={styles.inputsText}>Miasto:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={city => this.setState({ city })}
+            onChangeText={city => setSingleCard({...singleCard, city })}
           />
         </View>
         <View style={styles.inputsContainer}>
           <Text style={styles.inputsText}>Telefon:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={phone => this.setState({ phone })}
+            onChangeText={phone => setSingleCard({...singleCard, phone })}
           />
         </View>
         <View style={styles.inputsContainer}>
           <Text style={styles.inputsText}>Email:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={email => this.setState({ email })}
+            onChangeText={email => setSingleCard({...singleCard, email })}
           />
         </View>
         <View style={styles.inputsContainer}>
           <Text style={styles.inputsText}>Nip:</Text>
           <TextInput
             style={styles.inputs}
-            // onChangeText={nip => this.setState({ nip })}
+            onChangeText={nip => setSingleCard({...singleCard, nip })}
           />
         </View>
         <View>
-          {/* <Text style={{ color: "red" }}>{this.state.error}</Text> */}
+          <Text style={{ color: "red" }}>{error}</Text>
         </View>
         <View>
           {/* <Button onPress={this._addData} title="Dodaj wizytowke" /> */}
