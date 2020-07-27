@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 
- const AddCard = ({singleCard, setSingleCard, error}) => {
+ const AddCard = ({singleCard, setSingleCard, _addData, error}) => {
 
 
     return (
@@ -53,14 +53,14 @@ import { AsyncStorage } from "react-native";
           <Text style={styles.inputsText}>Nip:</Text>
           <TextInput
             style={styles.inputs}
-            onChangeText={nip => setSingleCard({...singleCard, nip })}
+            onChangeText={taxNumber => setSingleCard({...singleCard, taxNumber })}
           />
         </View>
         <View>
           <Text style={{ color: "red" }}>{error}</Text>
         </View>
         <View>
-          {/* <Button onPress={this._addData} title="Dodaj wizytowke" /> */}
+          <Button onPress={this._addData} title="Dodaj wizytowke" />
         </View>
       </View>
     );

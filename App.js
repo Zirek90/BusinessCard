@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Validators } from './utils/Validators';
 import Home from "./components/Home";
 import AddCard from "./components/AddCard";
 
@@ -16,7 +17,7 @@ function App() {
     city: "",
     phone: "",
     email: "",
-    nip: ""
+    taxNumber: ""
   });
   const [cards, setCards] = React.useState([])
   const [error, setError] = React.useState("");
@@ -44,29 +45,38 @@ function App() {
   };
 
   React.useEffect(() => {
-    console.log(singleCard)
+    // console.log(singleCard)
   }, [singleCard])
 
-  //   _addData = async () => {
+    _addData = async () => {
+    try {
+      const error = [];
+      const card = singleCard;
 
-  //   try {
-  //     await AsyncStorage.setItem(this.state.name, JSON.stringify(data))
-  //     alert("Twoja wizytowka zostala zapisana");
-  //   } catch (error) {
-  //     console.log(error);
-  //     setError(error);
-  //   }
-  // };
+      error.push(Validators.nameValidator(card.name));
+      error.push(Validators.phoneValidator(card.phone));
+      error.push(Validators.emailValidator(card.email));
+      error.push(Validators.taxNumberValidator(card.taxNumber));
+      if (error.flat().length) return setError(error.flat())
+      
+      await AsyncStorage.setItem(card.name, JSON.stringify(card))
+      alert("Twoja wizytowka zostala zapisana");
+      
+    } catch (error) {
+      console.log(error);
+      setError(error);
+    }
+  };
   
 
   return (
     <NavigationContainer>
         <Tab.Navigator initialRouteName="Strona główna">
           <Tab.Screen name="Strona główna" >
-            {props => <Home{...props} _fetchData={_fetchData}/>}
+            {props => <Home{...props} _fetchData={_fetchData} cards={cards} />}
           </Tab.Screen>
           <Tab.Screen name="Dodaj wizytówke">
-            {props => <AddCard {...props} singleCard={singleCard} setSingleCard={setSingleCard} error={error}/>}
+            {props => <AddCard {...props} singleCard={singleCard} setSingleCard={setSingleCard} _addData={_addData} error={error}/>}
           </Tab.Screen>
         </Tab.Navigator>
     </NavigationContainer>

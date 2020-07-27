@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
-const Home = ({ navigation, _fetchData }) => {
+const Home = ({ navigation, _fetchData, cards }) => {
 
   React.useEffect(() => {
     _fetchData();
@@ -10,6 +10,7 @@ const Home = ({ navigation, _fetchData }) => {
 
   return (
       <View style={styles.container}>
+      {console.log(Card)}
         <TouchableHighlight
           style={styles.buttons}
           underlayColor={"black"}
@@ -24,6 +25,21 @@ const Home = ({ navigation, _fetchData }) => {
         >
           <Text style={styles.textBtns}>Zobacz wszystkie wizytowki</Text>
         </TouchableHighlight>
+
+               {/* { cards 
+        ? cards.map((card, index) => (
+        <Card key={index}>
+          <Card.Content>
+            <Title>{card.name}</Title>
+            <Paragraph>{card.phone}</Paragraph>
+            <Paragraph>{card.email}</Paragraph>
+            <Paragraph>{card.taxNumber}</Paragraph>
+          </Card.Content>
+        </Card>
+      ))
+        : <Text>Brak wizytówek</Text>} */}
+
+ 
       </View>
   );
 }
