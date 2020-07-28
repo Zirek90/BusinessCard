@@ -6,6 +6,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Validators } from './utils/Validators';
 import Home from "./components/Home";
 import AddCard from "./components/AddCard";
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -35,7 +38,7 @@ function App() {
           allCards.push(parsedValue);
         })
       })
-      console.log(allCards)
+      // console.log(allCards)
       setCards(allCards)
     } 
     catch (error) {
@@ -70,16 +73,18 @@ function App() {
   
 
   return (
-    <NavigationContainer>
-        <Tab.Navigator initialRouteName="Strona główna">
-          <Tab.Screen name="Strona główna" >
-            {props => <Home{...props} _fetchData={_fetchData} cards={cards} />}
-          </Tab.Screen>
-          <Tab.Screen name="Dodaj wizytówke">
-            {props => <AddCard {...props} singleCard={singleCard} setSingleCard={setSingleCard} _addData={_addData} error={error}/>}
-          </Tab.Screen>
-        </Tab.Navigator>
-    </NavigationContainer>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <NavigationContainer>
+          <Tab.Navigator initialRouteName="Strona główna">
+            <Tab.Screen name="Strona główna" >
+              {props => <Home{...props} _fetchData={_fetchData} cards={cards} />}
+            </Tab.Screen>
+            <Tab.Screen name="Dodaj wizytówke">
+              {props => <AddCard {...props} singleCard={singleCard} setSingleCard={setSingleCard} _addData={_addData} error={error}/>}
+            </Tab.Screen>
+          </Tab.Navigator>
+      </NavigationContainer>
+    </ApplicationProvider>
   );
 }
 

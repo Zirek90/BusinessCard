@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
+import { StyleSheet, View, TouchableHighlight, Image } from "react-native";
+import { Layout, Card, Text, Divider } from '@ui-kitten/components';
+import photo from "../assets/images.png"
 
 const Home = ({ navigation, _fetchData, cards }) => {
 
@@ -8,39 +10,35 @@ const Home = ({ navigation, _fetchData, cards }) => {
   }, [])
 
 
-  return (
-      <View style={styles.container}>
-      {console.log(Card)}
-        <TouchableHighlight
-          style={styles.buttons}
-          underlayColor={"black"}
-          onPress={() => navigation.navigate("Dodaj wizytówke")}
-        >
-          <Text style={styles.textBtns}>Dodaj wizytowke</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.buttons}
-          underlayColor={"black"}
-          onPress={() => navigation.navigate("Strona główna")}
-        >
-          <Text style={styles.textBtns}>Zobacz wszystkie wizytowki</Text>
-        </TouchableHighlight>
 
-               {/* { cards 
+  return (
+      <Layout style={styles.container} level="1">
+      {cards 
         ? cards.map((card, index) => (
-        <Card key={index}>
-          <Card.Content>
-            <Title>{card.name}</Title>
-            <Paragraph>{card.phone}</Paragraph>
-            <Paragraph>{card.email}</Paragraph>
-            <Paragraph>{card.taxNumber}</Paragraph>
-          </Card.Content>
-        </Card>
-      ))
-        : <Text>Brak wizytówek</Text>} */}
+          <TouchableHighlight key={index} style={styles.card}>
+            <Card>
+            
+              <Text category='h3' style={{textAlign: "center"}}>{card.name}</Text>
+              <Divider/>
+              <View style={styles.wrappers}>
+                <View>
+                  <Text>{card.phone}</Text>
+                  <Text>{card.email}</Text>
+                  <Text>{card.taxNumber}</Text>
+                </View>
+                <View>
+                  <Image style={styles.images} source={photo} />
+                </View>
+              </View>
+            </Card>
+          </TouchableHighlight>
+        ))
+        : <Text>Brak wizytowek</Text>
+      }
+      
 
  
-      </View>
+      </Layout>
   );
 }
 
@@ -49,22 +47,26 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "grey"
+    backgroundColor: "lightgrey",
+    padding: 25
   },
-  buttons: {
-    width: 300,
-    height: 50,
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center"
+  card: {
+    width: "100%"
+  },
+  wrappers: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 5
   },
   textBtns: {
     fontSize: 20,
     fontWeight: "bold",
     color: "grey"
+  },
+  images: {
+    width: 100,
+    height: 60
   }
 });
