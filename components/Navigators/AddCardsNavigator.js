@@ -9,7 +9,7 @@ const AddCardsStack = createStackNavigator();
 function AddCardsStackScreen() {
     return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" component={Home} />
+        <HomeStack.Screen name="Strona główna" component={Home} />
         <HomeStack.Screen name="Details" component={AddCard} />
       </HomeStack.Navigator>
     );

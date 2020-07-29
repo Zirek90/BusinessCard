@@ -2,8 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 
- const AddCard = ({singleCard, setSingleCard, _addData, error}) => {
-
+ const AddCard = ({navigation, singleCard, setSingleCard, _addCard, error}) => {
 
     return (
       <View style={styles.container}>
@@ -60,7 +59,13 @@ import { AsyncStorage } from "react-native";
           <Text style={{ color: "red" }}>{error}</Text>
         </View>
         <View>
-          <Button onPress={this._addData} title="Dodaj wizytowke" />
+          <Button 
+            onPress={
+              () => this._addCard()
+                .then(() => navigation.navigate('Strona główna'))
+                .catch((e) => console.log("Couldn't add card"))
+            } 
+            title="Dodaj wizytowke" />
         </View>
       </View>
     );

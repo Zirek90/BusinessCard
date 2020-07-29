@@ -1,32 +1,42 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Validators } from './utils/Validators';
-import Home from "./components/Home";
-import AddCard from "./components/AddCard";
+import {Validators} from './utils/Validators';
+import Home from './components/Home';
+import AddCard from './components/AddCard';
+import DetailsCard from "./components/DetailsCard";
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
-
+import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 
 const Tab = createBottomTabNavigator();
 
 function App() {
   const [singleCard, setSingleCard] = React.useState({
-    name: "",
-    street: "",
-    postalCode: "",
-    city: "",
-    phone: "",
-    email: "",
-    taxNumber: ""
+    name: '',
+    street: '',
+    postalCode: '',
+    city: '',
+    phone: '',
+    email: '',
+    taxNumber: '',
   });
-  const [cards, setCards] = React.useState([])
-  const [error, setError] = React.useState("");
+  const [cards, setCards] = React.useState([]);
+  const [error, setError] = React.useState('');
 
-  _fetchData = async () => {
+  // React.useEffect(async() => {
+  //   const keys = await AsyncStorage.getAllKeys();
+  //   console.log(keys)
+  //   keys.forEach(async(el) => await AsyncStorage.removeItem(el))
+  // }, [])
 
+
+  React.useEffect(() => {
+    _fetchCards();
+  }, []);
+
+  _fetchCards = async () => {
     try {
       const allCards = [];
       const keys = await AsyncStorage.getAllKeys();
@@ -36,10 +46,10 @@ function App() {
           let value = store[i][1];
           let parsedValue = JSON.parse(value);
           allCards.push(parsedValue);
-        })
-      })
+        });
+      });
       // console.log(allCards)
-      setCards(allCards)
+      setCards(allCards);
     } 
     catch (error) {
       console.log(error);
@@ -47,11 +57,7 @@ function App() {
     }
   };
 
-  React.useEffect(() => {
-    // console.log(singleCard)
-  }, [singleCard])
-
-    _addData = async () => {
+  _addCard = async () => {
     try {
       const error = [];
       const card = singleCard;
@@ -60,29 +66,56 @@ function App() {
       error.push(Validators.phoneValidator(card.phone));
       error.push(Validators.emailValidator(card.email));
       error.push(Validators.taxNumberValidator(card.taxNumber));
-      if (error.flat().length) return setError(error.flat())
-      
-      await AsyncStorage.setItem(card.name, JSON.stringify(card))
-      alert("Twoja wizytowka zostala zapisana");
-      
-    } catch (error) {
+      if (error.flat().length) return setError(error.flat());
+
+      await AsyncStorage.setItem(card.name, JSON.stringify(card));
+      alert('Twoja wizytowka zostala zapisana');
+      _fetchCards();
+    } 
+    catch (error) {
       console.log(error);
       setError(error);
     }
   };
-  
+
+  _removeCard = async (card) => {
+    try {
+      await AsyncStorage.removeItem(card);
+      alert("Wizytowka usunieta")
+      _fetchCards()
+    }
+    catch(error) {
+      console.log(error);
+      setError(error)
+    }
+  }
 
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
       <NavigationContainer>
-          <Tab.Navigator initialRouteName="Strona główna">
-            <Tab.Screen name="Strona główna" >
-              {props => <Home{...props} _fetchData={_fetchData} cards={cards} />}
-            </Tab.Screen>
-            <Tab.Screen name="Dodaj wizytówke">
-              {props => <AddCard {...props} singleCard={singleCard} setSingleCard={setSingleCard} _addData={_addData} error={error}/>}
-            </Tab.Screen>
-          </Tab.Navigator>
+        <Tab.Navigator initialRouteName="Strona główna">
+          <Tab.Screen name="Strona główna">
+            {(props) => (
+              <Home {...props} cards={cards} _removeCard={_removeCard}/>
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Dodaj wizytówke">
+            {(props) => (
+              <AddCard
+                {...props}
+                singleCard={singleCard}
+                setSingleCard={setSingleCard}
+                _addCard={_addCard}
+                error={error}
+              />
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Cała wizytówka">
+            {(props) => (
+              <DetailsCard {...props} />
+            )}
+          </Tab.Screen>
+        </Tab.Navigator>
       </NavigationContainer>
     </ApplicationProvider>
   );

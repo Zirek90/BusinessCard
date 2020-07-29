@@ -1,72 +1,86 @@
-import React from "react";
-import { StyleSheet, View, TouchableHighlight, Image } from "react-native";
-import { Layout, Card, Text, Divider } from '@ui-kitten/components';
-import photo from "../assets/images.png"
+import React from 'react';
+import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
+import photo from '../assets/images.png';
 
-const Home = ({ navigation, _fetchData, cards }) => {
-
-  React.useEffect(() => {
-    _fetchData();
-  }, [])
-
-
-
+const Home = ({navigation, cards, _removeCard}) => {
   return (
-      <Layout style={styles.container} level="1">
-      {cards 
-        ? cards.map((card, index) => (
-          <TouchableHighlight key={index} style={styles.card}>
-            <Card>
-            
-              <Text category='h3' style={{textAlign: "center"}}>{card.name}</Text>
-              <Divider/>
-              <View style={styles.wrappers}>
-                <View>
-                  <Text>{card.phone}</Text>
-                  <Text>{card.email}</Text>
-                  <Text>{card.taxNumber}</Text>
-                </View>
-                <View>
-                  <Image style={styles.images} source={photo} />
-                </View>
-              </View>
-            </Card>
-          </TouchableHighlight>
-        ))
-        : <Text>Brak wizytowek</Text>
-      }
-      
+    <Layout style={styles.container} level="1">
+      {cards ? (
+        cards.map((card, index) => (
+          <Card key={index} style={styles.card}>
+            <TouchableOpacity 
+              style={styles.removeBtn}
+              onPress={() => _removeCard(card.name)}
+              >
+              <Text style={{color: "red"}}>X</Text>
+            </TouchableOpacity>
 
- 
-      </Layout>
+            <Text category="h4" style={{textAlign: 'center'}}>
+              {card.name}
+            </Text>
+            <Divider />
+            <View style={styles.wrappers}>
+              <View>
+                <Text>{card.phone}</Text>
+                <Text>{card.email}</Text>
+                <Text>{card.taxNumber}</Text>
+              </View>
+              <View>
+                <Image style={styles.images} source={photo} />
+              </View>
+            </View>
+              <Button 
+                style={styles.btn}
+                onPress={() => navigation.navigate("Cała wizytówka", {
+                  itemId: index,
+                  details: card
+                  })}
+                >
+              <Text>Zobacz wiecej</Text>
+            </Button>
+          </Card>
+        ))
+      ) : (
+        <Text>Brak wizytowek</Text>
+      )}
+    </Layout>
   );
-}
+};
 
 export default Home;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "lightgrey",
-    padding: 25
+    alignItems: 'center',
+    backgroundColor: 'lightgrey',
+    padding: 10,
   },
   card: {
-    width: "100%"
+    width: '100%',
+    margin: 5,
+    position: 'relative',
+  },
+  removeBtn: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    color: 'red',
   },
   wrappers: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 5
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 5,
   },
-  textBtns: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "grey"
+  btn: {
+    height: 30,
+    width: 150,
+    margin: 5,
+    alignSelf: "center"
   },
   images: {
     width: 100,
-    height: 60
-  }
+    height: 60,
+  },
 });
