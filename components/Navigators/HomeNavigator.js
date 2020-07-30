@@ -10,7 +10,7 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Strona główna" component={Home} />
-      <HomeStack.Screen name="Details" component={AddCard} />
+      <HomeStack.Screen name="Dodaj wizytówke" component={AddCard} />
     </HomeStack.Navigator>
   );
 }

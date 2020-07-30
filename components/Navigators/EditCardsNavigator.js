@@ -8,8 +8,8 @@ const AddCardsStack = createStackNavigator();
 function EditCardsStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="Home" component={Home} />
-      <HomeStack.Screen name="AddCard" component={AddCard} />
+      <HomeStack.Screen name="Strona główna" component={Home} />
+      <HomeStack.Screen name="Dodaj wizytówke" component={AddCard} />
     </HomeStack.Navigator>
   );
 }

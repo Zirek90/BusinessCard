@@ -9,6 +9,7 @@ import AddCard from './components/AddCard';
 import DetailsCard from "./components/DetailsCard";
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
+import ImagePicker from 'react-native-image-picker';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,6 +25,7 @@ function App() {
   });
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
+
 
   // React.useEffect(async() => {
   //   const keys = await AsyncStorage.getAllKeys();
@@ -110,12 +112,14 @@ function App() {
               />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Cała wizytówka">
+          {/* <Tab.Screen name="Cała wizytówka" navigationOptions={{header: null}}>
             {(props) => (
               <DetailsCard {...props} />
             )}
-          </Tab.Screen>
+          </Tab.Screen> */}
         </Tab.Navigator>
+
+        
       </NavigationContainer>
     </ApplicationProvider>
   );

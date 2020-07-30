@@ -1,100 +1,136 @@
-import React from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
-import { AsyncStorage } from "react-native";
+import React from 'react';
+import {StyleSheet, View, Image} from 'react-native';
+import {
+  Layout,
+  Card,
+  Text,
+  Input,
+  ButtonGroup,
+  Button,
+} from '@ui-kitten/components';
+import photo from '../assets/images.png';
 
- const AddCard = ({navigation, singleCard, setSingleCard, _addCard, error}) => {
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Imie/Nazwa firmy:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={name => setSingleCard({...singleCard, name })}
-          />
-        </View>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Ulica:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={street => setSingleCard({...singleCard, street })}
-          />
-        </View>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Kod pocztowy:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={postalCode => setSingleCard({...singleCard, postalCode })}
-          />
-        </View>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Miasto:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={city => setSingleCard({...singleCard, city })}
-          />
-        </View>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Telefon:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={phone => setSingleCard({...singleCard, phone })}
-          />
-        </View>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Email:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={email => setSingleCard({...singleCard, email })}
-          />
-        </View>
-        <View style={styles.inputsContainer}>
-          <Text style={styles.inputsText}>Nip:</Text>
-          <TextInput
-            style={styles.inputs}
-            onChangeText={taxNumber => setSingleCard({...singleCard, taxNumber })}
-          />
-        </View>
+const AddCard = ({navigation, singleCard, setSingleCard, _addCard, error}) => {
+  return (
+    <Layout style={styles.container}>
+      <Card style={styles.cardWrapper}>
+        <Input
+          placeholder="Imie/Nazwa firmy"
+          value={singleCard.name}
+          onChangeText={(name) => setSingleCard({...singleCard, name})}
+        />
+        <Input
+          placeholder="Ulica"
+          value={singleCard.street}
+          onChangeText={(street) => setSingleCard({...singleCard, street})}
+        />
+        <Input
+          placeholder="Kod pocztowy"
+          value={singleCard.postalCode}
+          onChangeText={(postalCode) =>
+            setSingleCard({...singleCard, postalCode})
+          }
+        />
+        <Input
+          placeholder="Miasto"
+          value={singleCard.city}
+          onChangeText={(city) => setSingleCard({...singleCard, city})}
+        />
+        <Input
+          placeholder="Telefon"
+          value={singleCard.phone}
+          onChangeText={(phone) => setSingleCard({...singleCard, phone})}
+        />
+        <Input
+          placeholder="Email"
+          value={singleCard.email}
+          onChangeText={(email) => setSingleCard({...singleCard, email})}
+        />
+        <Input
+          placeholder="Nip"
+          value={singleCard.taxNumber}
+          onChangeText={(taxNumber) =>
+            setSingleCard({...singleCard, taxNumber})
+          }
+        />
         <View>
-          <Text style={{ color: "red" }}>{error}</Text>
+          <Text style={{color: 'red'}}>{error}</Text>
         </View>
-        <View>
-          <Button 
-            onPress={
-              () => this._addCard()
+
+        <View style={styles.imageWrapper}>
+          {/* <Text category="h4">Wybierz zdjecie wizytówki</Text> */}
+          <Image style={styles.images} source={photo} />
+        </View>
+
+        <View style={styles.buttonGroup}>
+          <Button style={styles.btn} status="success">
+            <Text
+              style={{
+                alignItems: 'center',
+                margin: 'auto',
+                justifyContent: 'center',
+                textAlign: 'center',
+                flex: 1,
+              }}>
+              Zrób zdjęcie wizytówki
+            </Text>
+          </Button>
+          <Button style={styles.btn} status="success">
+            Wybierz wizytówke z galeri
+          </Button>
+        </View>
+      </Card>
+      <Button
+            style={styles.btnAdd}
+            onPress={() =>
+              this._addCard()
                 .then(() => navigation.navigate('Strona główna'))
                 .catch((e) => console.log("Couldn't add card"))
-            } 
-            title="Dodaj wizytowke" />
-        </View>
-      </View>
-    );
-}
+            }>
+            Dodaj wizytowke
+          </Button>
+    </Layout>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: 'lightgrey',
+    padding: 10,
   },
-  inputsContainer: {
-    flex: 1,
-    flexDirection: "row",
+  cardWrapper: {
+    width: '100%',
+    height: '100%',
     margin: 5,
-    justifyContent: "center",
     alignItems: "center"
   },
-  inputsText: {
-    flex: 1,
-    fontSize: 16,
-    color: "black"
+  imageWrapper: {
+    height: 150,
+    width: "90%",
+    flexDirection: "row",
+    marginBottom: 15,
+    alignItems: "center"
   },
-  inputs: {
-    flex: 3,
-    borderColor: "grey",
-    borderWidth: 1
-  }
+  images: {
+    width: "100%",
+    height: "100%"
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    // alignItems: "center",
+    justifyContent: 'center',
+  },
+  btn: {
+    width: '45%',
+  },
+  btnAdd: {
+    position: 'absolute',
+    bottom: 15,
+  },
 });
 
 export default AddCard;

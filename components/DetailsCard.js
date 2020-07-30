@@ -7,7 +7,7 @@ import { AsyncStorage } from "react-native";
 
     return (
       <View>
-        {console.log(route)}
+        {console.log(card)}
       </View>
     );
 }
