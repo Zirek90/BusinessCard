@@ -1,52 +1,57 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Image, ScrollView} from 'react-native';
 import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
 import photo from '../assets/images.png';
+import Orientation from 'react-native-orientation';
 
 const Home = ({navigation, cards, _removeCard}) => {
+  Orientation.lockToPortrait();
+
   return (
     <Layout style={styles.container} level="3">
-      {cards.length ? (
-        cards.map((card, index) => (
-          <Card key={index} style={styles.card}>
-            <TouchableOpacity 
-              style={styles.removeBtn}
-              onPress={() => _removeCard(card.name)}
-              >
-              <Text style={{color: "red"}}>X</Text>
-            </TouchableOpacity>
-
-            <Text category="h4" style={{textAlign: 'center'}}>
-              {card.name}
-            </Text>
-            <Divider />
-            <View style={styles.wrappers}>
-              <View>
-                <Text>{card.phone}</Text>
-                <Text>{card.email}</Text>
-                <Text>{card.taxNumber}</Text>
-              </View>
-              <View>
-              {card.photo && 
-                <Image style={styles.images} source={{uri: card.photo}} />
-              }
-                
-              </View>
-            </View>
-              <Button 
-                style={styles.btn}
-                onPress={() => navigation.navigate("Cała wizytówka", {
-                  itemId: index,
-                  details: card
-                  })}
+      <ScrollView style={{width: "100%"}}>
+        {cards.length ? (
+          cards.map((card, index) => (
+            <Card key={index} style={styles.card}>
+              <TouchableOpacity 
+                style={styles.removeBtn}
+                onPress={() => _removeCard(card.name)}
                 >
-              <Text>Zobacz wiecej</Text>
-            </Button>
-          </Card>
-        ))
-      ) : (
-        <Text category="h2" style={styles.textNoCards}>Brak wizytowek</Text>
-      )}
+                <Text style={{color: "red"}}>X</Text>
+              </TouchableOpacity>
+
+              <Text category="h4" style={{textAlign: 'center'}}>
+                {card.name}
+              </Text>
+              <Divider />
+              <View style={styles.wrappers}>
+                <View>
+                  <Text>Tel: {card.phone}</Text>
+                  <Text>Email: {card.email}</Text>
+                  <Text>NIP: {card.taxNumber}</Text>
+                </View>
+                <View>
+                {card.photo && 
+                  <Image style={styles.images} source={{uri: card.photo}}/>
+                }
+                  
+                </View>
+              </View>
+                <Button 
+                  style={styles.btn}
+                  onPress={() => navigation.navigate("Cała wizytówka", {
+                    itemId: index,
+                    details: card
+                    })}
+                  >
+                <Text>Zobacz wiecej</Text>
+              </Button>
+            </Card>
+          ))
+        ) : (
+          <Text category="h2" style={styles.textNoCards}>Brak wizytowek</Text>
+        )}
+      </ScrollView>
     </Layout>
   );
 };
@@ -85,6 +90,7 @@ const styles = StyleSheet.create({
   images: {
     width: 100,
     height: 60,
+    resizeMode: "contain"
   },
   textNoCards: {
     fontWeight: "bold",

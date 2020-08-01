@@ -13,12 +13,9 @@ import ImagePicker from 'react-native-image-picker';
 
 const Tab = createBottomTabNavigator();
 const options = {
-  // title: 'Select Avatar',
-  // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
+  quality: 0.4,
+  maxWidth: 500,
+  maxHeight: 500,
 };
 
 function App() {
@@ -116,6 +113,7 @@ function App() {
         console.log('User tapped custom button: ', response.customButton);
         setError(response.customButton);
       } else {
+        console.log(response)
         const photo = response.uri
         setSingleCard({...singleCard, photo})
         console.log(singleCard, photo)
@@ -140,6 +138,18 @@ function App() {
         console.log(singleCard, photo)
       }
     });
+  }
+
+  _editCard = async (card) => {
+    try {
+      await AsyncStorage.setItem(card.name, JSON.stringify(card));
+      alert("Wizytówka dodana")
+      _fetchCards();
+    }
+    catch(e) {
+      console.log(e)
+      setError(e)
+    }
   }
 
   _removeCard = async (card) => {
@@ -177,7 +187,7 @@ function App() {
           </Tab.Screen>
           <Tab.Screen name="Cała wizytówka">
             {(props) => (
-              <DetailsCard {...props} />
+              <DetailsCard {...props} _editCard={_editCard}/>
             )}
           </Tab.Screen>
         </Tab.Navigator>

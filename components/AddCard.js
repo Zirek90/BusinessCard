@@ -9,8 +9,13 @@ import {
   Button,
 } from '@ui-kitten/components';
 import photo from '../assets/images.png';
+import Orientation from 'react-native-orientation';
+
 
 const AddCard = ({navigation, singleCard, setSingleCard, _addCard, _addImageToCard, error}) => {
+    Orientation.lockToPortrait();
+  
+
   return (
     <Layout style={styles.container} level="3">
       <Card style={styles.cardWrapper}>
