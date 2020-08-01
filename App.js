@@ -12,6 +12,14 @@ import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 
 const Tab = createBottomTabNavigator();
+const options = {
+  // title: 'Select Avatar',
+  // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
 
 function App() {
   const [singleCard, setSingleCard] = React.useState({
@@ -22,6 +30,7 @@ function App() {
     phone: '',
     email: '',
     taxNumber: '',
+    photo: null
   });
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
@@ -72,6 +81,16 @@ function App() {
 
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
       alert('Twoja wizytowka zostala zapisana');
+      setSingleCard({
+        name: '',
+        street: '',
+        postalCode: '',
+        city: '',
+        phone: '',
+        email: '',
+        taxNumber: '',
+        photo: null
+      })
       _fetchCards();
     } 
     catch (error) {
@@ -79,6 +98,49 @@ function App() {
       setError(error);
     }
   };
+
+  _addImageToCard = (mode) => {
+    if (mode === "takePicture") return _takePhotoOfCard()
+    else if (mode === "pickPicture") return _pickCardFromGalery()
+  }
+
+  _takePhotoOfCard = () => {
+    ImagePicker.launchCamera(options, (response) => {
+       if (response.didCancel) {
+        console.log('User cancelled image picker');
+        setError('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        setError(response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        setError(response.customButton);
+      } else {
+        const photo = response.uri
+        setSingleCard({...singleCard, photo})
+        console.log(singleCard, photo)
+      }
+    });
+  }
+
+  _pickCardFromGalery = () => {
+    ImagePicker.launchImageLibrary(options, (response) => {
+       if (response.didCancel) {
+        console.log('User cancelled image picker');
+        setError('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        setError(response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        setError(response.customButton);
+      } else {
+        const photo = response.uri
+        setSingleCard({...singleCard, photo})
+        console.log(singleCard, photo)
+      }
+    });
+  }
 
   _removeCard = async (card) => {
     try {
@@ -108,15 +170,16 @@ function App() {
                 singleCard={singleCard}
                 setSingleCard={setSingleCard}
                 _addCard={_addCard}
+                _addImageToCard={_addImageToCard}
                 error={error}
               />
             )}
           </Tab.Screen>
-          {/* <Tab.Screen name="Cała wizytówka" navigationOptions={{header: null}}>
+          <Tab.Screen name="Cała wizytówka">
             {(props) => (
               <DetailsCard {...props} />
             )}
-          </Tab.Screen> */}
+          </Tab.Screen>
         </Tab.Navigator>
 
         

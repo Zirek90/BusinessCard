@@ -5,8 +5,8 @@ import photo from '../assets/images.png';
 
 const Home = ({navigation, cards, _removeCard}) => {
   return (
-    <Layout style={styles.container} level="1">
-      {cards ? (
+    <Layout style={styles.container} level="3">
+      {cards.length ? (
         cards.map((card, index) => (
           <Card key={index} style={styles.card}>
             <TouchableOpacity 
@@ -27,7 +27,10 @@ const Home = ({navigation, cards, _removeCard}) => {
                 <Text>{card.taxNumber}</Text>
               </View>
               <View>
-                <Image style={styles.images} source={photo} />
+              {card.photo && 
+                <Image style={styles.images} source={{uri: card.photo}} />
+              }
+                
               </View>
             </View>
               <Button 
@@ -42,7 +45,7 @@ const Home = ({navigation, cards, _removeCard}) => {
           </Card>
         ))
       ) : (
-        <Text>Brak wizytowek</Text>
+        <Text category="h2" style={styles.textNoCards}>Brak wizytowek</Text>
       )}
     </Layout>
   );
@@ -83,4 +86,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 60,
   },
+  textNoCards: {
+    fontWeight: "bold",
+    marginTop: 20,
+  }
 });

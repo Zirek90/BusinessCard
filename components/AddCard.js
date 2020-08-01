@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {
   Layout,
   Card,
@@ -10,10 +10,9 @@ import {
 } from '@ui-kitten/components';
 import photo from '../assets/images.png';
 
-
-const AddCard = ({navigation, singleCard, setSingleCard, _addCard, error}) => {
+const AddCard = ({navigation, singleCard, setSingleCard, _addCard, _addImageToCard, error}) => {
   return (
-    <Layout style={styles.container}>
+    <Layout style={styles.container} level="3">
       <Card style={styles.cardWrapper}>
         <Input
           placeholder="Imie/Nazwa firmy"
@@ -58,38 +57,36 @@ const AddCard = ({navigation, singleCard, setSingleCard, _addCard, error}) => {
           <Text style={{color: 'red'}}>{error}</Text>
         </View>
 
-        <View style={styles.imageWrapper}>
-          {/* <Text category="h4">Wybierz zdjecie wizytówki</Text> */}
-          <Image style={styles.images} source={photo} />
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity style={styles.btn} onPress={() => _addImageToCard("takePicture")}>
+            <Text style={styles.btnText}>Zrób zdjęcie wizytówki</Text>
+          </TouchableOpacity>
+
+          {/* <TouchableOpacity style={styles.btn} onPress={() => _addImageToCard("pickPicture")}>
+            <Text style={styles.btnText}>Wybierz wizytówke z galeri</Text>
+          </TouchableOpacity> */}
         </View>
 
-        <View style={styles.buttonGroup}>
-          <Button style={styles.btn} status="success">
-            <Text
-              style={{
-                alignItems: 'center',
-                margin: 'auto',
-                justifyContent: 'center',
-                textAlign: 'center',
-                flex: 1,
-              }}>
-              Zrób zdjęcie wizytówki
-            </Text>
-          </Button>
-          <Button style={styles.btn} status="success">
-            Wybierz wizytówke z galeri
-          </Button>
+        <View style={styles.imageWrapper}>
+          {singleCard.photo
+            ? <Image style={styles.images} source={{uri: singleCard.photo}} />
+            : <Text category="h4" style={{textAlign: "center"}}>Wybierz zdjecie wizytówki</Text>
+          }  
+     
         </View>
+
+        <Button
+          onPress={() =>
+            this._addCard()
+              .then(() => !error.length && navigation.navigate('Strona główna'))
+              .catch((e) => console.log("Couldn't add card"))
+          }
+        >
+        Dodaj wizytowke
+      </Button>
       </Card>
-      <Button
-            style={styles.btnAdd}
-            onPress={() =>
-              this._addCard()
-                .then(() => navigation.navigate('Strona główna'))
-                .catch((e) => console.log("Couldn't add card"))
-            }>
-            Dodaj wizytowke
-          </Button>
+
+      
     </Layout>
   );
 };
@@ -98,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: 'lightgrey',
     padding: 10,
   },
@@ -106,31 +103,40 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     margin: 5,
-    alignItems: "center"
+    alignItems: 'center',
   },
   imageWrapper: {
     height: 150,
-    width: "90%",
-    flexDirection: "row",
-    marginBottom: 15,
-    alignItems: "center"
+    width: '90%',
+    flexDirection: 'row',
+    margin: 15,
+    alignItems: 'center',
   },
   images: {
-    width: "100%",
-    height: "100%"
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    margin: 'auto',
   },
   buttonGroup: {
     flexDirection: 'row',
-    // alignItems: "center",
     justifyContent: 'center',
   },
   btn: {
-    width: '45%',
+    width: '47%',
+    borderWidth: 1,
+    borderColor: 'lightgreen',
+    backgroundColor: 'rgba(147, 230, 150, 0.2)',
+    borderStyle: 'solid',
+    borderRadius: 10,
+    margin: 5,
+    padding: 2,
   },
-  btnAdd: {
-    position: 'absolute',
-    bottom: 15,
-  },
+  btnText: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'center',
+  }
 });
 
 export default AddCard;
