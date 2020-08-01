@@ -13,7 +13,7 @@ import Orientation from 'react-native-orientation';
 
 
 const AddCard = ({navigation, singleCard, setSingleCard, _addCard, _addImageToCard, error}) => {
-    Orientation.lockToPortrait();
+    // Orientation.lockToPortrait();
   
 
   return (
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'lightgrey',
     padding: 10,
   },
   cardWrapper: {

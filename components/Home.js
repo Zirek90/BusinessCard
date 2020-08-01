@@ -5,7 +5,8 @@ import photo from '../assets/images.png';
 import Orientation from 'react-native-orientation';
 
 const Home = ({navigation, cards, _removeCard}) => {
-  Orientation.lockToPortrait();
+  // Orientation.unlockAllOrientations();
+  // Orientation.lockToPortrait();
 
   return (
     <Layout style={styles.container} level="3">
@@ -62,7 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'lightgrey',
     padding: 10,
   },
   card: {
@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     height: 30,
     width: 150,
     margin: 5,
-    alignSelf: "center"
+    alignSelf: "center",
+    color: "white"
   },
   images: {
     width: 100,

@@ -6,10 +6,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Validators} from './utils/Validators';
 import Home from './components/Home';
 import AddCard from './components/AddCard';
-import DetailsCard from "./components/DetailsCard";
+import DetailsCard from './components/DetailsCard';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Orientation from 'react-native-orientation';
 
 const Tab = createBottomTabNavigator();
 const options = {
@@ -27,18 +29,21 @@ function App() {
     phone: '',
     email: '',
     taxNumber: '',
-    photo: null
+    photo: null,
   });
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
+  const [orientation, setOrientation] = React.useState('Portait');
 
+  React.useEffect(() => {
+    console.log('bam');
+  }, [orientation]);
 
   // React.useEffect(async() => {
   //   const keys = await AsyncStorage.getAllKeys();
   //   console.log(keys)
   //   keys.forEach(async(el) => await AsyncStorage.removeItem(el))
   // }, [])
-
 
   React.useEffect(() => {
     _fetchCards();
@@ -58,8 +63,7 @@ function App() {
       });
       // console.log(allCards)
       setCards(allCards);
-    } 
-    catch (error) {
+    } catch (error) {
       console.log(error);
       setError(error);
     }
@@ -86,24 +90,23 @@ function App() {
         phone: '',
         email: '',
         taxNumber: '',
-        photo: null
-      })
+        photo: null,
+      });
       _fetchCards();
-    } 
-    catch (error) {
+    } catch (error) {
       console.log(error);
       setError(error);
     }
   };
 
   _addImageToCard = (mode) => {
-    if (mode === "takePicture") return _takePhotoOfCard()
-    else if (mode === "pickPicture") return _pickCardFromGalery()
-  }
+    if (mode === 'takePicture') return _takePhotoOfCard();
+    else if (mode === 'pickPicture') return _pickCardFromGalery();
+  };
 
   _takePhotoOfCard = () => {
     ImagePicker.launchCamera(options, (response) => {
-       if (response.didCancel) {
+      if (response.didCancel) {
         console.log('User cancelled image picker');
         setError('User cancelled image picker');
       } else if (response.error) {
@@ -113,17 +116,17 @@ function App() {
         console.log('User tapped custom button: ', response.customButton);
         setError(response.customButton);
       } else {
-        console.log(response)
-        const photo = response.uri
-        setSingleCard({...singleCard, photo})
-        console.log(singleCard, photo)
+        console.log(response);
+        const photo = response.uri;
+        setSingleCard({...singleCard, photo});
+        console.log(singleCard, photo);
       }
     });
-  }
+  };
 
   _pickCardFromGalery = () => {
     ImagePicker.launchImageLibrary(options, (response) => {
-       if (response.didCancel) {
+      if (response.didCancel) {
         console.log('User cancelled image picker');
         setError('User cancelled image picker');
       } else if (response.error) {
@@ -133,44 +136,57 @@ function App() {
         console.log('User tapped custom button: ', response.customButton);
         setError(response.customButton);
       } else {
-        const photo = response.uri
-        setSingleCard({...singleCard, photo})
-        console.log(singleCard, photo)
+        const photo = response.uri;
+        setSingleCard({...singleCard, photo});
+        console.log(singleCard, photo);
       }
     });
-  }
+  };
 
   _editCard = async (card) => {
     try {
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
-      alert("Wizytówka dodana")
-      _fetchCards();
+      alert('Wizytówka dodana');
+    } catch (e) {
+      console.log(e);
+      setError(e);
     }
-    catch(e) {
-      console.log(e)
-      setError(e)
-    }
-  }
+  };
 
   _removeCard = async (card) => {
     try {
       await AsyncStorage.removeItem(card);
-      alert("Wizytowka usunieta")
-      _fetchCards()
-    }
-    catch(error) {
+      alert('Wizytowka usunieta');
+      _fetchCards();
+    } catch (error) {
       console.log(error);
-      setError(error)
+      setError(error);
     }
-  }
+  };
 
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
       <NavigationContainer>
-        <Tab.Navigator initialRouteName="Strona główna">
+        <Tab.Navigator
+          initialRouteName="Strona główna"
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              if (route.name === 'Strona główna') iconName = 'home';
+              else if (route.name === 'Dodaj wizytówke')
+                iconName = 'add-outline';
+              else if (route.name === 'Cała wizytówka')
+                iconName = 'wallet-outline';
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: 'blue',
+            inactiveTintColor: 'gray',
+          }}>
           <Tab.Screen name="Strona główna">
             {(props) => (
-              <Home {...props} cards={cards} _removeCard={_removeCard}/>
+              <Home {...props} cards={cards} _removeCard={_removeCard} />
             )}
           </Tab.Screen>
           <Tab.Screen name="Dodaj wizytówke">
@@ -187,12 +203,14 @@ function App() {
           </Tab.Screen>
           <Tab.Screen name="Cała wizytówka">
             {(props) => (
-              <DetailsCard {...props} _editCard={_editCard}/>
+              <DetailsCard
+                {...props}
+                _editCard={_editCard}
+                setOrientation={setOrientation}
+              />
             )}
           </Tab.Screen>
         </Tab.Navigator>
-
-        
       </NavigationContainer>
     </ApplicationProvider>
   );

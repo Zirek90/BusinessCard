@@ -6,15 +6,12 @@ import Orientation from 'react-native-orientation';
 
 
  const DetailsCard = ({route, navigation, _editCard}) => {
+  if (route.params) {
    const {details} = route.params;
    const [card, setCard] = React.useState(details)
    const [edit, setEdit] = React.useState(false)
-  Orientation.lockToLandscape();
 
-  React.useEffect(() => {
-    console.log(details)
-  },[details])
-
+  
     const Header = (props) => (
       <View {...props} style={styles.headerWrapper}>
         <Text category='h2' style={styles.title}>{details.name}</Text>
@@ -85,6 +82,18 @@ import Orientation from 'react-native-orientation';
         </ScrollView>
       </Layout>
     );
+    }
+    else {
+      return (
+        <Layout level="3" style={{flex: 1, margin: 15}}>
+          <Card style={{flex: 1, justifyContent: "center"}}>
+            <Text category="h3" style={{textAlign: "center"}}>
+              Prosze wybierz wizytówkę z ekranu głównego aby zobaczyć szczegóły
+            </Text>
+          </Card>
+        </Layout>
+      )
+    }
 }
 
 export default DetailsCard;
