@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {View, Switch} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,10 +9,9 @@ import Home from './components/Home';
 import AddCard from './components/AddCard';
 import DetailsCard from './components/DetailsCard';
 import * as eva from '@eva-design/eva';
-import {ApplicationProvider, Layout, Text} from '@ui-kitten/components';
+import {ApplicationProvider} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Orientation from 'react-native-orientation';
 
 const Tab = createBottomTabNavigator();
 const options = {
@@ -33,17 +33,12 @@ function App() {
   });
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
-  const [orientation, setOrientation] = React.useState('Portait');
+  const [theme, setTheme] = React.useState('light');
 
-  React.useEffect(() => {
-    console.log('bam');
-  }, [orientation]);
-
-  // React.useEffect(async() => {
-  //   const keys = await AsyncStorage.getAllKeys();
-  //   console.log(keys)
-  //   keys.forEach(async(el) => await AsyncStorage.removeItem(el))
-  // }, [])
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  };
 
   React.useEffect(() => {
     _fetchCards();
@@ -116,10 +111,9 @@ function App() {
         console.log('User tapped custom button: ', response.customButton);
         setError(response.customButton);
       } else {
-        console.log(response);
+        // console.log(response);
         const photo = response.uri;
         setSingleCard({...singleCard, photo});
-        console.log(singleCard, photo);
       }
     });
   };
@@ -146,7 +140,7 @@ function App() {
   _editCard = async (card) => {
     try {
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
-      alert('Wizytówka dodana');
+      alert('Wizytówka zedytowana');
     } catch (e) {
       console.log(e);
       setError(e);
@@ -165,7 +159,7 @@ function App() {
   };
 
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider {...eva} theme={eva[theme]}>
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName="Strona główna"
@@ -202,16 +196,29 @@ function App() {
             )}
           </Tab.Screen>
           <Tab.Screen name="Cała wizytówka">
-            {(props) => (
-              <DetailsCard
-                {...props}
-                _editCard={_editCard}
-                setOrientation={setOrientation}
-              />
-            )}
+            {(props) => <DetailsCard {...props} _editCard={_editCard} />}
           </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
+
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Ionicons name={'sunny-outline'} size={19} color={'#ffbf00'} />
+        <Switch
+          trackColor={{false: '#bfc7c1', true: '#bfc7c1'}}
+          thumbColor={theme === 'light' ? '#ffbf00' : 'blue'}
+          ios_backgroundColor="#bfc7c1"
+          onValueChange={toggleTheme}
+          value={theme !== 'light' ? true : false}
+        />
+        <Ionicons name={'moon-outline'} size={19} color={'blue'} />
+      </View>
     </ApplicationProvider>
   );
 }

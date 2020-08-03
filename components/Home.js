@@ -1,27 +1,39 @@
 import React from 'react';
-import {StyleSheet, View, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
 import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
-import photo from '../assets/images.png';
-import Orientation from 'react-native-orientation';
 
-const Home = ({navigation, cards, _removeCard}) => {
-  // Orientation.unlockAllOrientations();
-  // Orientation.lockToPortrait();
-
-  return (
-    <Layout style={styles.container} level="3">
-      <ScrollView style={{width: "100%"}}>
-        {cards.length ? (
-          cards.map((card, index) => (
-            <Card key={index} style={styles.card}>
-              <TouchableOpacity 
-                style={styles.removeBtn}
-                onPress={() => _removeCard(card.name)}
-                >
-                <Text style={{color: "red"}}>X</Text>
-              </TouchableOpacity>
-
-              <Text category="h4" style={{textAlign: 'center'}}>
+const Home = ({navigation, cards, _removeCard}) => (
+  <Layout style={styles.container} level="4">
+    <ScrollView style={{width: '100%'}}>
+      {cards.length && (
+        <Text style={{textAlign: 'center'}}>
+          Kliknij wizytówke aby w nią wejść
+        </Text>
+      )}
+      {cards.length ? (
+        cards.map((card, index) => (
+          <Card key={index} style={styles.card}>
+            <TouchableOpacity
+              style={styles.removeBtn}
+              onPress={() => _removeCard(card.name)}>
+              <Text category="h6" style={{color: 'red'}}>
+                X
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Cała wizytówka', {
+                  itemId: index,
+                  details: card,
+                })
+              }>
+              <Text category="h4" style={{textAlign: 'center', marginTop: -10}}>
                 {card.name}
               </Text>
               <Divider />
@@ -32,30 +44,24 @@ const Home = ({navigation, cards, _removeCard}) => {
                   <Text>NIP: {card.taxNumber}</Text>
                 </View>
                 <View>
-                {card.photo && 
-                  <Image style={styles.images} source={{uri: card.photo}}/>
-                }
-                  
+                  {card.photo && (
+                    <Image style={styles.images} source={{uri: card.photo}} />
+                  )}
                 </View>
               </View>
-                <Button 
-                  style={styles.btn}
-                  onPress={() => navigation.navigate("Cała wizytówka", {
-                    itemId: index,
-                    details: card
-                    })}
-                  >
-                <Text>Zobacz wiecej</Text>
-              </Button>
-            </Card>
-          ))
-        ) : (
-          <Text category="h2" style={styles.textNoCards}>Brak wizytowek</Text>
-        )}
-      </ScrollView>
-    </Layout>
-  );
-};
+            </TouchableOpacity>
+          </Card>
+        ))
+      ) : (
+        <Card>
+          <Text category="h2" style={styles.textNoCards}>
+            Brak wizytowek
+          </Text>
+        </Card>
+      )}
+    </ScrollView>
+  </Layout>
+);
 
 export default Home;
 
@@ -64,16 +70,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 10,
+    paddingTop: 30,
   },
   card: {
     width: '100%',
-    margin: 5,
     position: 'relative',
   },
   removeBtn: {
     position: 'absolute',
-    top: 0,
-    right: 5,
+    top: -4,
+    right: 2,
     color: 'red',
   },
   wrappers: {
@@ -85,16 +91,15 @@ const styles = StyleSheet.create({
     height: 30,
     width: 150,
     margin: 5,
-    alignSelf: "center",
-    color: "white"
+    alignSelf: 'center',
+    color: 'white',
   },
   images: {
     width: 100,
     height: 60,
-    resizeMode: "contain"
+    resizeMode: 'contain',
   },
   textNoCards: {
-    fontWeight: "bold",
-    marginTop: 20,
-  }
+    fontWeight: 'bold',
+  },
 });
