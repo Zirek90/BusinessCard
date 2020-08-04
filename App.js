@@ -12,6 +12,7 @@ import * as eva from '@eva-design/eva';
 import {ApplicationProvider} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Orientation from 'react-native-orientation';
 
 const Tab = createBottomTabNavigator();
 const options = {
@@ -27,6 +28,7 @@ function App() {
     postalCode: '',
     city: '',
     phone: '',
+    website: '',
     email: '',
     taxNumber: '',
     photo: null,
@@ -39,6 +41,14 @@ function App() {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
   };
+
+  const handleOrientation = (mode) => {
+    Orientation.unlockAllOrientations();
+    if (mode === "details") {
+      Orientation.lockToLandscape();
+    }
+    else Orientation.lockToPortrait();
+  }
 
   React.useEffect(() => {
     _fetchCards();
@@ -84,6 +94,7 @@ function App() {
         city: '',
         phone: '',
         email: '',
+        website: '',
         taxNumber: '',
         photo: null,
       });
@@ -141,6 +152,7 @@ function App() {
     try {
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
       alert('Wizytówka zedytowana');
+      _fetchCards()
     } catch (e) {
       console.log(e);
       setError(e);
@@ -178,12 +190,16 @@ function App() {
             activeTintColor: 'blue',
             inactiveTintColor: 'gray',
           }}>
-          <Tab.Screen name="Strona główna">
+          <Tab.Screen name="Strona główna" listeners={{
+            tabPress:() => handleOrientation("home")
+          }}>
             {(props) => (
               <Home {...props} cards={cards} _removeCard={_removeCard} />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Dodaj wizytówke">
+          <Tab.Screen name="Dodaj wizytówke" listeners={{
+            tabPress:() => handleOrientation("add")
+          }}>
             {(props) => (
               <AddCard
                 {...props}
@@ -195,7 +211,9 @@ function App() {
               />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Cała wizytówka">
+          <Tab.Screen name="Cała wizytówka" listeners={{
+            tabPress:() => handleOrientation("details")
+          }}>
             {(props) => <DetailsCard {...props} _editCard={_editCard} />}
           </Tab.Screen>
         </Tab.Navigator>

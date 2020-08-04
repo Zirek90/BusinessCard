@@ -7,6 +7,7 @@ const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToC
   <Layout style={styles.container} level="4">
     <Card style={styles.cardWrapper}>
       <Input
+        style={styles.inputs}
         placeholder="Imie/Nazwa firmy"
         value={singleCard.name}
         onChangeText={(name) => setSingleCard({...singleCard, name})}
@@ -34,17 +35,26 @@ const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToC
         onChangeText={(phone) => setSingleCard({...singleCard, phone})}
       />
       <Input
+        placeholder="Website"
+        value={singleCard.website}
+        onChangeText={(website) => setSingleCard({...singleCard, website})}
+      />
+      <Input
         placeholder="Email"
         value={singleCard.email}
         onChangeText={(email) => setSingleCard({...singleCard, email})}
       />
       <Input
+      style={{marginBottom: 10}}
         placeholder="Nip"
         value={singleCard.taxNumber}
         onChangeText={(taxNumber) => setSingleCard({...singleCard, taxNumber})}
       />
       <View style={{flexDirection: "column"}}>
-        {error.length && error.map((err, i) => <Text key={i} style={{color: 'red'}}>{err}</Text>)}
+        {error.length 
+          ? error.map((err, i) => <Text key={i} style={{color: 'red'}}>{err}</Text>)
+          : null
+        }
         
       </View>
 
@@ -92,11 +102,15 @@ const styles = StyleSheet.create({
     margin: 5,
     alignItems: 'center',
   },
+  inputs: {
+    width: "100%"
+  },
   imageWrapper: {
     height: 150,
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: "center",
   },
   images: {
     width: "100%",
@@ -108,13 +122,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btn: {
-    width: '80%',
+    width: '70%',
     borderWidth: 1,
     borderColor: 'lightgrey',
     borderStyle: 'solid',
     borderRadius: 10,
     alignItems: 'center',
     padding: 5,
+    marginTop: -20
   },
   btnText: {
     color: 'black',

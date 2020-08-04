@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, Image, ScrollView, Linking} from 'react-native';
 import {
   Layout,
   Card,
@@ -15,13 +8,27 @@ import {
   Button,
   Input,
 } from '@ui-kitten/components';
-import {AsyncStorage} from 'react-native';
+import Orientation from 'react-native-orientation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DetailsCard = ({route, navigation, _editCard}) => {
   if (route.params) {
     const {details} = route.params;
     const [card, setCard] = React.useState(details);
     const [edit, setEdit] = React.useState(false);
+
+    React.useEffect(() => {
+      setCard(details);
+    }, [details]);
+
+    React.useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
+        Orientation.unlockAllOrientations();
+        Orientation.lockToLandscape();
+      });
+
+      return () => unsubscribe();
+    });
 
     const Header = (props) => (
       <View {...props} style={styles.headerWrapper}>
@@ -51,19 +58,82 @@ const DetailsCard = ({route, navigation, _editCard}) => {
     const content = (
       <Card header={Header}>
         <View style={[styles.wrapper, {paddingBottom: 10}]}>
-          <Text style={styles.text}>{details.street} </Text>
-          <Text style={styles.text}>{details.postalCode}, </Text>
-          <Text style={styles.text}>{details.city}</Text>
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="road"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Text style={styles.text}>{details.street} </Text>
+            <Text style={styles.text}>{details.postalCode} </Text>
+          </View>
+
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="building"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Text style={styles.text}>{details.city}</Text>
+          </View>
         </View>
-        <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
-          {details.email}
-        </Text>
-        <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
-          {details.phone}
-        </Text>
-        <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
-          {details.taxNumber}
-        </Text>
+
+        <View style={styles.wrapper}>
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="envelope"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+              {details.email}
+            </Text>
+          </View>
+
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="google"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Text
+              style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}
+              onPress={() => Linking.openURL('https://' + details.website)}>
+              {details.website}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.wrapper}>
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="phone"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+              {details.phone}
+            </Text>
+          </View>
+
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="id-card"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+              {details.taxNumber}
+            </Text>
+          </View>
+        </View>
+
         <Divider />
         <Image style={styles.image} source={{uri: details.photo}} />
       </Card>
@@ -71,40 +141,101 @@ const DetailsCard = ({route, navigation, _editCard}) => {
 
     const editable_content = (
       <Card header={Header}>
-        <View style={styles.wrapper}>
-          <Input
-            style={styles.text}
-            value={card.street}
-            onChangeText={(street) => setCard({...card, street})}
-          />
-          <Input
-            style={styles.text}
-            value={card.postalCode}
-            onChangeText={(postalCode) => setCard({...card, postalCode})}
-          />
-          <Input
-            style={styles.text}
-            value={card.city}
-            onChangeText={(city) => setCard({...card, city})}
-          />
+        <View style={[styles.wrapper, {paddingBottom: 10}]}>
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="road"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Input
+              style={styles.text}
+              value={card.street}
+              onChangeText={(street) => setCard({...card, street})}
+            />
+            <Input
+              style={styles.text}
+              value={card.postalCode}
+              onChangeText={(postalCode) => setCard({...card, postalCode})}
+            />
+          </View>
+
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="building"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Input
+              style={styles.text}
+              value={card.city}
+              onChangeText={(city) => setCard({...card, city})}
+            />
+          </View>
         </View>
-        {/* <View style={styles.wrapper}> */}
-        <Input
-          style={styles.text}
-          value={card.email}
-          onChangeText={(email) => setCard({...card, email})}
-        />
-        <Input
-          style={styles.text}
-          value={card.phone}
-          onChangeText={(phone) => setCard({...card, phone})}
-        />
-        <Input
-          style={styles.text}
-          value={card.taxNumber}
-          onChangeText={(taxNumber) => setCard({...card, taxNumber})}
-        />
-        {/* </View> */}
+
+        <View style={styles.wrapper}>
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="envelope"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Input
+              style={styles.text}
+              value={card.email}
+              onChangeText={(email) => setCard({...card, email})}
+            />
+          </View>
+
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="google"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Input
+              style={styles.text}
+              value={card.website}
+              onChangeText={(website) => setCard({...card, website})}
+            />
+          </View>
+        </View>
+
+        <View style={styles.wrapper}>
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="phone"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Input
+              style={styles.text}
+              value={card.phone}
+              onChangeText={(phone) => setCard({...card, phone})}
+            />
+          </View>
+
+          <View style={styles.insideWrapper}>
+            <Icon
+              name="id-card"
+              size={20}
+              color="grey"
+              style={{paddingRight: 5}}
+            />
+            <Input
+              style={styles.text}
+              value={card.taxNumber}
+              onChangeText={(taxNumber) => setCard({...card, taxNumber})}
+            />
+          </View>
+        </View>
+
         <Divider />
         <Image style={styles.image} source={{uri: details.photo}} />
       </Card>
@@ -153,7 +284,12 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 10,
+  },
+  insideWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     fontSize: 20,

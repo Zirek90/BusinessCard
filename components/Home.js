@@ -5,17 +5,21 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Linking
 } from 'react-native';
 import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
 
 const Home = ({navigation, cards, _removeCard}) => (
   <Layout style={styles.container} level="4">
     <ScrollView style={{width: '100%'}}>
-      {cards.length && (
-        <Text style={{textAlign: 'center'}}>
-          Kliknij wizytówke aby w nią wejść
-        </Text>
-      )}
+      {cards.length 
+        ? (
+          <Text style={{textAlign: 'center'}}>
+            Kliknij wizytówke aby w nią wejść
+          </Text>
+          )
+        : null
+      }
       {cards.length ? (
         cards.map((card, index) => (
           <Card key={index} style={styles.card}>
