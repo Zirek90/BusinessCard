@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Linking
 } from 'react-native';
 import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Home = ({navigation, cards, _removeCard}) => (
   <Layout style={styles.container} level="4">
@@ -26,9 +26,7 @@ const Home = ({navigation, cards, _removeCard}) => (
             <TouchableOpacity
               style={styles.removeBtn}
               onPress={() => _removeCard(card.name)}>
-              <Text category="h6" style={{color: 'red'}}>
-                X
-              </Text>
+                <Ionicons name={'trash-outline'} size={16} color={'red'} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
   },
   removeBtn: {
     position: 'absolute',
-    top: -4,
+    top: 0,
     right: 2,
     color: 'red',
   },
