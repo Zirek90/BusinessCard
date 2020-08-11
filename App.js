@@ -13,10 +13,10 @@ import {ApplicationProvider} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
+import SplashScreen from 'react-native-splash-screen'
 import { options } from "./utils/imageOptions";
 
 const Tab = createBottomTabNavigator();
-
 
 function App() {
   const [singleCard, setSingleCard] = React.useState({
@@ -33,6 +33,11 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
   const [theme, setTheme] = React.useState('light');
+
+  React.useEffect(() => {
+    SplashScreen.hide();
+  }, [])
+
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
