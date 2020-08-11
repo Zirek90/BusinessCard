@@ -78,7 +78,7 @@ const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToC
           style={{alignSelf: 'flex-end'}}
           onPress={() =>
             _addCard()
-              .then(() => !error.length && navigation.navigate('Strona główna'))
+              .then(() => singleCard.name && navigation.navigate('Strona główna'))
               .catch((e) => console.log("Couldn't add card"))
           }>
           Dodaj wizytowke
