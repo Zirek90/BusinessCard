@@ -16,7 +16,7 @@ const phoneValidator = (data) => {
         if (data.length < 6) error.push("Numer telefonu musi mieć co najmniej 6 znaki");
         if (!isNumber.test(data)) error.push("Numer telefonu musi zawierac tylko cyfry");
     }
-    else error.push("Prosze wpisac numer telefonu")
+    // else error.push("Prosze wpisac numer telefonu")
 
     return error
 }
@@ -28,7 +28,7 @@ const emailValidator = (data) => {
         if (data.length < 5) error.push("Email musi mieć co najmniej 6 znaki");
         if (!isEmail.test(data)) error.push("Email nie ma poprawnego formatu");
     }
-    else error.push("Prosze wpisac email")
+    // else error.push("Prosze wpisac email")
 
     return error
 }
@@ -38,7 +38,7 @@ const taxNumberValidator = (data) => {
     if (data) {
         if (data.length < 6) error.push("NIP musi mieć co najmniej 6 znaki");
     }
-    else error.push("Prosze wpisac NIP")
+    // else error.push("Prosze wpisac NIP")
     
     return error
 }
