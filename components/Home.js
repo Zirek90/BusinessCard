@@ -8,8 +8,20 @@ import {
 } from 'react-native';
 import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Orientation from 'react-native-orientation';
 
-const Home = ({navigation, cards, _removeCard}) => (
+const Home = ({navigation, cards, _removeCard}) => {
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      Orientation.unlockAllOrientations();
+      Orientation.lockToPortrait();
+    });
+
+    return () => unsubscribe();
+  });
+
+  return (
   <Layout style={styles.container} level="4">
     <ScrollView style={{width: '100%'}}>
       {cards.length 
@@ -63,7 +75,8 @@ const Home = ({navigation, cards, _removeCard}) => (
       )}
     </ScrollView>
   </Layout>
-);
+  )
+};
 
 export default Home;
 
