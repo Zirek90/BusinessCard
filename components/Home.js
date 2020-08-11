@@ -15,7 +15,7 @@ const Home = ({navigation, cards, _removeCard}) => (
       {cards.length 
         ? (
           <Text style={{textAlign: 'center'}}>
-            Kliknij wizytówke aby w nią wejść
+            Kliknij wizytówkę aby w nią wejść
           </Text>
           )
         : null
@@ -59,7 +59,7 @@ const Home = ({navigation, cards, _removeCard}) => (
       ) : (
         <Card>
           <Text category="h2" style={styles.textNoCards}>
-            Brak wizytowek
+            Brak wizytówek
           </Text>
         </Card>
       )}
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
+    marginTop: 5,
     position: 'relative',
   },
   removeBtn: {

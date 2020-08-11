@@ -10,8 +10,10 @@ import {
 } from '@ui-kitten/components';
 import Orientation from 'react-native-orientation';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ImagePicker from 'react-native-image-picker';
+import { options } from "../utils/imageOptions";
 
-const DetailsCard = ({route, navigation, _editCard}) => {
+const DetailsCard = ({route, navigation, _editCard, setError}) => {
   if (route.params) {
     const {details} = route.params;
     const [card, setCard] = React.useState(details);
@@ -29,6 +31,25 @@ const DetailsCard = ({route, navigation, _editCard}) => {
 
       return () => unsubscribe();
     });
+
+    _pickCardFromGalery = () => {
+      ImagePicker.launchImageLibrary(options, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+          setError('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+          setError(response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+          setError(response.customButton);
+        } else {
+          // const photo = response.uri;
+          const photo = `data:image/jpeg;base64,${response.data}`;
+          setCard({...card, photo})
+        }
+      });
+    };
 
     const Header = (props) => (
       <View {...props} style={styles.headerWrapper}>
@@ -237,7 +258,14 @@ const DetailsCard = ({route, navigation, _editCard}) => {
         </View>
 
         <Divider />
-        <Image style={styles.image} source={{uri: details.photo}} />
+        <Image style={styles.image} source={{uri: card.photo}} />
+        <Button
+          style={{width: 150, alignSelf: "center"}}
+          status="info"
+          onPress={() => _pickCardFromGalery()}
+          >
+          Podmień zdjęcie
+        </Button>
       </Card>
     );
 
@@ -251,7 +279,7 @@ const DetailsCard = ({route, navigation, _editCard}) => {
       <Layout level="4" style={styles.container}>
         <Card style={{flex: 1, justifyContent: 'center'}}>
           <Text category="h3" style={{textAlign: 'center'}}>
-            Prosze wybierz wizytówkę z ekranu głównego aby zobaczyć szczegóły
+            Proszę wybierz wizytówkę z ekranu głównego aby zobaczyć szczegóły
           </Text>
         </Card>
       </Layout>

@@ -62,13 +62,13 @@ const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToC
         {singleCard.photo ? (
           <TouchableOpacity 
             style={{width: "100%"}} 
-            onPress={() => _addImageToCard('takePicture')}>
+            onPress={() => _addImageToCard()}>
               <Image  style={styles.images} source={{uri: singleCard.photo}} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => _addImageToCard('takePicture')}>
+            onPress={() => _addImageToCard()}>
             <Ionicons name={'camera-outline'} size={100} color={'lightgrey'} />
           </TouchableOpacity>
         )}

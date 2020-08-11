@@ -13,13 +13,10 @@ import {ApplicationProvider} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
+import { options } from "./utils/imageOptions";
 
 const Tab = createBottomTabNavigator();
-const options = {
-  quality: 0.4,
-  maxWidth: 500,
-  maxHeight: 500,
-};
+
 
 function App() {
   const [singleCard, setSingleCard] = React.useState({
@@ -105,11 +102,6 @@ function App() {
     }
   };
 
-  _addImageToCard = (mode) => {
-    if (mode === 'takePicture') return _takePhotoOfCard();
-    else if (mode === 'pickPicture') return _pickCardFromGalery();
-  };
-
   _takePhotoOfCard = () => {
     ImagePicker.launchCamera(options, (response) => {
       if (response.didCancel) {
@@ -123,27 +115,8 @@ function App() {
         setError(response.customButton);
       } else {
         // console.log(response);
-        const photo = response.uri;
+        const photo = `data:image/jpeg;base64,${response.data}`;
         setSingleCard({...singleCard, photo});
-      }
-    });
-  };
-
-  _pickCardFromGalery = () => {
-    ImagePicker.launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-        setError('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-        setError(response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        setError(response.customButton);
-      } else {
-        const photo = response.uri;
-        setSingleCard({...singleCard, photo});
-        console.log(singleCard, photo);
       }
     });
   };
@@ -206,7 +179,7 @@ function App() {
                 singleCard={singleCard}
                 setSingleCard={setSingleCard}
                 _addCard={_addCard}
-                _addImageToCard={_addImageToCard}
+                _addImageToCard={_takePhotoOfCard}
                 error={error}
               />
             )}
@@ -214,7 +187,13 @@ function App() {
           <Tab.Screen name="Cała wizytówka" listeners={{
             tabPress:() => handleOrientation("details")
           }}>
-            {(props) => <DetailsCard {...props} _editCard={_editCard} />}
+            {(props) => 
+              <DetailsCard 
+              {...props} 
+              _editCard={_editCard} 
+              setError={setError}
+              />
+            }
           </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
