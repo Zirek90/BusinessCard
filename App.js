@@ -1,10 +1,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Switch} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Validators} from './utils/Validators';
+import Settings from './components/Settings';
 import Home from './components/Home';
 import AddCard from './components/AddCard';
 import DetailsCard from './components/DetailsCard';
@@ -33,6 +33,7 @@ function App() {
   });
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
+  const [visible, setVisible] = React.useState(false);
   const [theme, setTheme] = React.useState('light');
   const [language, setLanguage] = React.useState(LANGUAGE_OPTIONS.ENGLISH);
 
@@ -43,6 +44,14 @@ function App() {
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
+  };
+
+  const toggleLanguage = () => {
+    const nextLanguage =
+      language.no_businesscards === 'No business cards available'
+        ? LANGUAGE_OPTIONS.POLISH
+        : LANGUAGE_OPTIONS.ENGLISH;
+    setLanguage(nextLanguage);
   };
 
   const handleOrientation = (mode) => {
@@ -216,24 +225,14 @@ function App() {
         </Tab.Navigator>
       </NavigationContainer>
 
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 10,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        <Ionicons name={'sunny-outline'} size={19} color={'#ffbf00'} />
-        <Switch
-          trackColor={{false: '#bfc7c1', true: '#bfc7c1'}}
-          thumbColor={theme === 'light' ? '#ffbf00' : 'blue'}
-          ios_backgroundColor="#bfc7c1"
-          onValueChange={toggleTheme}
-          value={theme !== 'light' ? true : false}
-        />
-        <Ionicons name={'moon-outline'} size={19} color={'blue'} />
-      </View>
+      <Settings
+        visible={visible}
+        theme={theme}
+        language={language}
+        toggleTheme={toggleTheme}
+        toggleLanguage={toggleLanguage}
+        setVisible={setVisible}
+      />
     </ApplicationProvider>
   );
 }

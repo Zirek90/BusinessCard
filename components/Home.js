@@ -67,7 +67,7 @@ const Home = ({navigation, cards, _removeCard, language}) => {
           </Card>
         ))
       ) : (
-        <Card>
+        <Card style={{marginTop: 10}}>
           <Text category="h2" style={styles.textNoCards}>
             {language.no_businesscards}
           </Text>
