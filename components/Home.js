@@ -10,7 +10,7 @@ import {Layout, Card, Text, Divider, Button} from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
 
-const Home = ({navigation, cards, _removeCard}) => {
+const Home = ({navigation, cards, _removeCard, language}) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -27,7 +27,7 @@ const Home = ({navigation, cards, _removeCard}) => {
       {cards.length 
         ? (
           <Text style={{textAlign: 'center'}}>
-            Kliknij wizytówkę aby w nią wejść
+            {language.home_description}
           </Text>
           )
         : null
@@ -53,9 +53,9 @@ const Home = ({navigation, cards, _removeCard}) => {
               <Divider />
               <View style={styles.wrappers}>
                 <View>
-                  <Text>Tel: {card.phone}</Text>
-                  <Text>Email: {card.email}</Text>
-                  <Text>NIP: {card.taxNumber}</Text>
+                  <Text>{language.home.phone} {card.phone}</Text>
+                  <Text>{language.home.email} {card.email}</Text>
+                  <Text>{language.home.tax_number} {card.taxNumber}</Text>
                 </View>
                 <View>
                   {card.photo && (
@@ -69,7 +69,7 @@ const Home = ({navigation, cards, _removeCard}) => {
       ) : (
         <Card>
           <Text category="h2" style={styles.textNoCards}>
-            Brak wizytówek
+            {language.no_businesscards}
           </Text>
         </Card>
       )}

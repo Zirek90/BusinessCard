@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-picker';
 import { options } from "../utils/imageOptions";
 
-const DetailsCard = ({route, navigation, _editCard, setError}) => {
+const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
   if (route.params) {
     const {details} = route.params;
     const [card, setCard] = React.useState(details);
@@ -60,7 +60,7 @@ const DetailsCard = ({route, navigation, _editCard, setError}) => {
           style={[styles.btn, {right: '10%'}]}
           status="warning"
           onPress={() => setEdit(!edit)}>
-          {edit ? 'Powrót' : 'Edytuj'}
+          {edit ? language.edit.return_btn : language.edit.edit_btn }
         </Button>
         <Button
           style={[styles.btn, {left: '10%'}]}
@@ -71,7 +71,7 @@ const DetailsCard = ({route, navigation, _editCard, setError}) => {
             setEdit(false);
             navigation.navigate('Strona główna');
           }}>
-          Akceptuj
+          {language.edit.accept_btn}
         </Button>
       </View>
     );
@@ -156,7 +156,9 @@ const DetailsCard = ({route, navigation, _editCard, setError}) => {
         </View>
 
         <Divider />
-        <Image style={styles.image} source={{uri: details.photo}} />
+          {details.photo && 
+            <Image style={styles.image} source={{uri: details.photo}} />
+          }
       </Card>
     );
 
@@ -258,13 +260,15 @@ const DetailsCard = ({route, navigation, _editCard, setError}) => {
         </View>
 
         <Divider />
-        <Image style={styles.image} source={{uri: card.photo}} />
+        {card.photo && 
+          <Image style={styles.image} source={{uri: card.photo}} />
+        }
         <Button
           style={{width: 150, alignSelf: "center"}}
           status="info"
           onPress={() => _pickCardFromGalery()}
           >
-          Podmień zdjęcie
+          {card.photo ? language.edit.replace_image_btn : language.edit.add_image_btn}
         </Button>
       </Card>
     );
@@ -279,7 +283,7 @@ const DetailsCard = ({route, navigation, _editCard, setError}) => {
       <Layout level="4" style={styles.container}>
         <Card style={{flex: 1, justifyContent: 'center'}}>
           <Text category="h3" style={{textAlign: 'center'}}>
-            Proszę wybierz wizytówkę z ekranu głównego aby zobaczyć szczegóły
+          {language.edit_description}
           </Text>
         </Card>
       </Layout>

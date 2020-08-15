@@ -3,50 +3,50 @@ import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import {Layout, Card, Text, Input, Button} from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToCard, error }) => (
+const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToCard, error, language }) => (
   <Layout style={styles.container} level="4">
     <Card style={styles.cardWrapper}>
       <Input
         style={styles.inputs}
-        placeholder="Imie/Nazwa firmy"
+        placeholder={language.add.name}
         value={singleCard.name}
         onChangeText={(name) => setSingleCard({...singleCard, name})}
       />
       <Input
-        placeholder="Ulica"
+        placeholder={language.add.street}
         value={singleCard.street}
         onChangeText={(street) => setSingleCard({...singleCard, street})}
       />
       <Input
-        placeholder="Kod pocztowy"
+        placeholder={language.add.postal_code}
         value={singleCard.postalCode}
         onChangeText={(postalCode) =>
           setSingleCard({...singleCard, postalCode})
         }
       />
       <Input
-        placeholder="Miasto"
+        placeholder={language.add.city}
         value={singleCard.city}
         onChangeText={(city) => setSingleCard({...singleCard, city})}
       />
       <Input
-        placeholder="Telefon"
+        placeholder={language.add.phone}
         value={singleCard.phone}
         onChangeText={(phone) => setSingleCard({...singleCard, phone})}
       />
       <Input
-        placeholder="Website"
+        placeholder={language.add.website}
         value={singleCard.website}
         onChangeText={(website) => setSingleCard({...singleCard, website})}
       />
       <Input
-        placeholder="Email"
+        placeholder={language.add.email}
         value={singleCard.email}
         onChangeText={(email) => setSingleCard({...singleCard, email})}
       />
       <Input
       style={{marginBottom: 10}}
-        placeholder="Nip"
+        placeholder={language.add.tax_number}
         value={singleCard.taxNumber}
         onChangeText={(taxNumber) => setSingleCard({...singleCard, taxNumber})}
       />
@@ -81,7 +81,7 @@ const AddCard = ({ navigation, singleCard, setSingleCard, _addCard, _addImageToC
               .then(() => singleCard.name && navigation.navigate('Strona główna'))
               .catch((e) => console.log("Couldn't add card"))
           }>
-          Dodaj wizytowke
+          {language.add.button}
         </Button>
       </View>
     </Card>

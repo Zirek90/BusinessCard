@@ -13,8 +13,9 @@ import {ApplicationProvider} from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
-import SplashScreen from 'react-native-splash-screen'
-import { options } from "./utils/imageOptions";
+import SplashScreen from 'react-native-splash-screen';
+import {LANGUAGE_OPTIONS} from './utils/languageOptions';
+import {options} from './utils/imageOptions';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,11 +34,11 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [error, setError] = React.useState('');
   const [theme, setTheme] = React.useState('light');
+  const [language, setLanguage] = React.useState(LANGUAGE_OPTIONS.ENGLISH);
 
   React.useEffect(() => {
     SplashScreen.hide();
-  }, [])
-
+  }, []);
 
   const toggleTheme = () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
@@ -46,11 +47,10 @@ function App() {
 
   const handleOrientation = (mode) => {
     Orientation.unlockAllOrientations();
-    if (mode === "details") {
+    if (mode === 'details') {
       Orientation.lockToLandscape();
-    }
-    else Orientation.lockToPortrait();
-  }
+    } else Orientation.lockToPortrait();
+  };
 
   React.useEffect(() => {
     _fetchCards();
@@ -88,7 +88,7 @@ function App() {
       if (error.flat().length) return setError(error.flat());
 
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
-      alert('Twoja wizytowka zostala zapisana');
+      alert(language.add_alert);
       setSingleCard({
         name: '',
         street: '',
@@ -129,8 +129,8 @@ function App() {
   _editCard = async (card) => {
     try {
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
-      alert('Wizytówka zedytowana');
-      _fetchCards()
+      alert(language.edit_alert);
+      _fetchCards();
     } catch (e) {
       console.log(e);
       setError(e);
@@ -140,7 +140,7 @@ function App() {
   _removeCard = async (card) => {
     try {
       await AsyncStorage.removeItem(card);
-      alert('Wizytowka usunieta');
+      alert(language.delete_alert);
       _fetchCards();
     } catch (error) {
       console.log(error);
@@ -168,16 +168,25 @@ function App() {
             activeTintColor: 'blue',
             inactiveTintColor: 'gray',
           }}>
-          <Tab.Screen name="Strona główna" listeners={{
-            tabPress:() => handleOrientation("home")
-          }}>
+          <Tab.Screen
+            name="Strona główna"
+            listeners={{
+              tabPress: () => handleOrientation('home'),
+            }}>
             {(props) => (
-              <Home {...props} cards={cards} _removeCard={_removeCard} />
+              <Home
+                {...props}
+                cards={cards}
+                _removeCard={_removeCard}
+                language={language}
+              />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Dodaj wizytówke" listeners={{
-            tabPress:() => handleOrientation("add")
-          }}>
+          <Tab.Screen
+            name="Dodaj wizytówke"
+            listeners={{
+              tabPress: () => handleOrientation('add'),
+            }}>
             {(props) => (
               <AddCard
                 {...props}
@@ -186,19 +195,23 @@ function App() {
                 _addCard={_addCard}
                 _addImageToCard={_takePhotoOfCard}
                 error={error}
+                language={language}
               />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Cała wizytówka" listeners={{
-            tabPress:() => handleOrientation("details")
-          }}>
-            {(props) => 
-              <DetailsCard 
-              {...props} 
-              _editCard={_editCard} 
-              setError={setError}
+          <Tab.Screen
+            name="Cała wizytówka"
+            listeners={{
+              tabPress: () => handleOrientation('details'),
+            }}>
+            {(props) => (
+              <DetailsCard
+                {...props}
+                _editCard={_editCard}
+                setError={setError}
+                language={language}
               />
-            }
+            )}
           </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
