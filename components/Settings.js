@@ -13,8 +13,8 @@ const Settings = ({
 }) => {
   const renderMenuButton = () => (
     <Ionicons
-      name={'ellipsis-vertical-outline'}
-      size={30}
+      name={'settings-outline'}
+      size={20}
       color={'#ffbf00'}
       onPress={() => setVisible(true)}
     />
@@ -76,8 +76,8 @@ export default Settings;
 const styles = StyleSheet.create({
   settingContainer: {
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: 5,
+    right: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },

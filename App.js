@@ -32,10 +32,11 @@ function App() {
     photo: null,
   });
   const [cards, setCards] = React.useState([]);
+  const [detailsAvailable, setDetailsAvailable] = React.useState(false);
   const [error, setError] = React.useState('');
   const [visible, setVisible] = React.useState(false);
   const [theme, setTheme] = React.useState('light');
-  const [language, setLanguage] = React.useState(LANGUAGE_OPTIONS.ENGLISH);
+  const [language, setLanguage] = React.useState(LANGUAGE_OPTIONS.POLISH);
 
   React.useEffect(() => {
     SplashScreen.hide();
@@ -65,11 +66,11 @@ function App() {
     _fetchCards();
   }, []);
 
-  _fetchCards = async () => {
+  const _fetchCards = async () => {
     try {
       const allCards = [];
       const keys = await AsyncStorage.getAllKeys();
-      const items = await AsyncStorage.multiGet(keys, (err, stores) => {
+      await AsyncStorage.multiGet(keys, (err, stores) => {
         stores.map((result, i, store) => {
           // let key = store[i][0];
           let value = store[i][1];
@@ -79,22 +80,22 @@ function App() {
       });
       // console.log(allCards)
       setCards(allCards);
-    } catch (error) {
-      console.log(error);
-      setError(error);
+    } catch (err) {
+      console.log(err);
+      setError(err);
     }
   };
 
-  _addCard = async () => {
+  const _addCard = async () => {
     try {
-      const error = [];
+      const errorList = [];
       const card = singleCard;
 
-      error.push(Validators.nameValidator(card.name));
-      error.push(Validators.phoneValidator(card.phone));
-      error.push(Validators.emailValidator(card.email));
-      error.push(Validators.taxNumberValidator(card.taxNumber));
-      if (error.flat().length) return setError(error.flat());
+      errorList.push(Validators.nameValidator(card.name));
+      errorList.push(Validators.phoneValidator(card.phone));
+      errorList.push(Validators.emailValidator(card.email));
+      errorList.push(Validators.taxNumberValidator(card.taxNumber));
+      if (errorList.flat().length) return setError(errorList.flat());
 
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
       alert(language.add_alert);
@@ -110,13 +111,13 @@ function App() {
         photo: null,
       });
       _fetchCards();
-    } catch (error) {
-      console.log(error);
-      setError(error);
+    } catch (err) {
+      console.log(err);
+      setError(err);
     }
   };
 
-  _takePhotoOfCard = () => {
+  const _takePhotoOfCard = () => {
     ImagePicker.launchCamera(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -135,25 +136,25 @@ function App() {
     });
   };
 
-  _editCard = async (card) => {
+  const _editCard = async (card) => {
     try {
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
       alert(language.edit_alert);
       _fetchCards();
-    } catch (e) {
-      console.log(e);
-      setError(e);
+    } catch (err) {
+      console.log(err);
+      setError(err);
     }
   };
 
-  _removeCard = async (card) => {
+  const _removeCard = async (card) => {
     try {
       await AsyncStorage.removeItem(card);
       alert(language.delete_alert);
       _fetchCards();
-    } catch (error) {
-      console.log(error);
-      setError(error);
+    } catch (err) {
+      console.log(err);
+      setError(err);
     }
   };
 
@@ -187,6 +188,7 @@ function App() {
                 {...props}
                 cards={cards}
                 _removeCard={_removeCard}
+                setDetailsAvailable={setDetailsAvailable}
                 language={language}
               />
             )}
@@ -208,7 +210,7 @@ function App() {
               />
             )}
           </Tab.Screen>
-          <Tab.Screen
+          {detailsAvailable &&<Tab.Screen
             name="Cała wizytówka"
             listeners={{
               tabPress: () => handleOrientation('details'),
@@ -222,6 +224,7 @@ function App() {
               />
             )}
           </Tab.Screen>
+          }
         </Tab.Navigator>
       </NavigationContainer>
 
