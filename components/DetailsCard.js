@@ -1,21 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Image, ScrollView, Linking} from 'react-native';
-import {
-  Layout,
-  Card,
-  Text,
-  Divider,
-  Button,
-  Input,
-} from '@ui-kitten/components';
+import { StyleSheet, View, Image, ScrollView, Linking } from 'react-native';
+import { Layout, Card, Text, Divider, Button, Input } from '@ui-kitten/components';
 import Orientation from 'react-native-orientation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-picker';
-import { options } from "../utils/imageOptions";
+import { options } from '../utils/imageOptions';
 
-const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
+const DetailsCard = ({ route, navigation, _editCard, setError, language }) => {
   if (route.params) {
-    const {details} = route.params;
+    const { details } = route.params;
     const [card, setCard] = React.useState(details);
     const [edit, setEdit] = React.useState(false);
 
@@ -46,7 +39,7 @@ const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
         } else {
           // const photo = response.uri;
           const photo = `data:image/jpeg;base64,${response.data}`;
-          setCard({...card, photo})
+          setCard({ ...card, photo });
         }
       });
     };
@@ -57,13 +50,13 @@ const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
           {details.name}
         </Text>
         <Button
-          style={[styles.btn, {right: '10%'}]}
+          style={[styles.btn, { right: '10%' }]}
           status="warning"
           onPress={() => setEdit(!edit)}>
-          {edit ? language.edit.return_btn : language.edit.edit_btn }
+          {edit ? language.edit.return_btn : language.edit.edit_btn}
         </Button>
         <Button
-          style={[styles.btn, {left: '10%'}]}
+          style={[styles.btn, { left: '10%' }]}
           status="success"
           disabled={!edit}
           onPress={() => {
@@ -78,51 +71,29 @@ const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
 
     const content = (
       <Card header={Header}>
-        <View style={[styles.wrapper, {paddingBottom: 10}]}>
+        <View style={[styles.wrapper, { paddingBottom: 10 }]}>
           <View style={styles.insideWrapper}>
-            <Icon
-              name="road"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="road" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Text style={styles.text}>{details.street} </Text>
             <Text style={styles.text}>{details.postalCode} </Text>
           </View>
 
           <View style={styles.insideWrapper}>
-            <Icon
-              name="building"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="building" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Text style={styles.text}>{details.city}</Text>
           </View>
         </View>
 
         <View style={styles.wrapper}>
           <View style={styles.insideWrapper}>
-            <Icon
-              name="envelope"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
-            <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
-              {details.email}
-            </Text>
+            <Icon name="envelope" size={20} color="grey" style={{ paddingRight: 5 }} />
+            <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.email}</Text>
           </View>
 
           <View style={styles.insideWrapper}>
-            <Icon
-              name="google"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="google" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Text
-              style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}
+              style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}
               onPress={() => Linking.openURL('https://' + details.website)}>
               {details.website}
             </Text>
@@ -131,143 +102,96 @@ const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
 
         <View style={styles.wrapper}>
           <View style={styles.insideWrapper}>
-            <Icon
-              name="phone"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
-            <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
-              {details.phone}
-            </Text>
+            <Icon name="phone" size={20} color="grey" style={{ paddingRight: 5 }} />
+            <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.phone}</Text>
           </View>
 
           <View style={styles.insideWrapper}>
-            <Icon
-              name="id-card"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
-            <Text style={{fontSize: 20, paddingLeft: 10, paddingTop: 5}}>
+            <Icon name="id-card" size={20} color="grey" style={{ paddingRight: 5 }} />
+            <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>
               {details.taxNumber}
             </Text>
           </View>
         </View>
 
         <Divider />
-          {details.photo && 
-            <Image style={styles.image} source={{uri: details.photo}} />
-          }
+        {details.photo && <Image style={styles.image} source={{ uri: details.photo }} />}
       </Card>
     );
 
     const editable_content = (
       <Card header={Header}>
-        <View style={[styles.wrapper, {paddingBottom: 10}]}>
+        <View style={[styles.wrapper, { paddingBottom: 10 }]}>
           <View style={styles.insideWrapper}>
-            <Icon
-              name="road"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="road" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Input
               style={styles.text}
               value={card.street}
-              onChangeText={(street) => setCard({...card, street})}
+              onChangeText={(street) => setCard({ ...card, street })}
             />
             <Input
               style={styles.text}
               value={card.postalCode}
-              onChangeText={(postalCode) => setCard({...card, postalCode})}
+              onChangeText={(postalCode) => setCard({ ...card, postalCode })}
             />
           </View>
 
           <View style={styles.insideWrapper}>
-            <Icon
-              name="building"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="building" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Input
               style={styles.text}
               value={card.city}
-              onChangeText={(city) => setCard({...card, city})}
+              onChangeText={(city) => setCard({ ...card, city })}
             />
           </View>
         </View>
 
         <View style={styles.wrapper}>
           <View style={styles.insideWrapper}>
-            <Icon
-              name="envelope"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="envelope" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Input
               style={styles.text}
               value={card.email}
-              onChangeText={(email) => setCard({...card, email})}
+              onChangeText={(email) => setCard({ ...card, email })}
             />
           </View>
 
           <View style={styles.insideWrapper}>
-            <Icon
-              name="google"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="google" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Input
               style={styles.text}
               value={card.website}
-              onChangeText={(website) => setCard({...card, website})}
+              onChangeText={(website) => setCard({ ...card, website })}
             />
           </View>
         </View>
 
         <View style={styles.wrapper}>
           <View style={styles.insideWrapper}>
-            <Icon
-              name="phone"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="phone" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Input
               style={styles.text}
               value={card.phone}
-              onChangeText={(phone) => setCard({...card, phone})}
+              onChangeText={(phone) => setCard({ ...card, phone })}
             />
           </View>
 
           <View style={styles.insideWrapper}>
-            <Icon
-              name="id-card"
-              size={20}
-              color="grey"
-              style={{paddingRight: 5}}
-            />
+            <Icon name="id-card" size={20} color="grey" style={{ paddingRight: 5 }} />
             <Input
               style={styles.text}
               value={card.taxNumber}
-              onChangeText={(taxNumber) => setCard({...card, taxNumber})}
+              onChangeText={(taxNumber) => setCard({ ...card, taxNumber })}
             />
           </View>
         </View>
 
         <Divider />
-        {card.photo && 
-          <Image style={styles.image} source={{uri: card.photo}} />
-        }
+        {card.photo && <Image style={styles.image} source={{ uri: card.photo }} />}
         <Button
-          style={{width: 150, alignSelf: "center"}}
+          style={{ width: 150, alignSelf: 'center' }}
           status="info"
-          onPress={() => _pickCardFromGalery()}
-          >
+          onPress={() => _pickCardFromGalery()}>
           {card.photo ? language.edit.replace_image_btn : language.edit.add_image_btn}
         </Button>
       </Card>
@@ -281,9 +205,9 @@ const DetailsCard = ({route, navigation, _editCard, setError, language}) => {
   } else {
     return (
       <Layout level="4" style={styles.container}>
-        <Card style={{flex: 1, justifyContent: 'center'}}>
-          <Text category="h3" style={{textAlign: 'center'}}>
-          {language.edit_description}
+        <Card style={{ flex: 1, justifyContent: 'center' }}>
+          <Text category="h3" style={{ textAlign: 'center' }}>
+            {language.edit_description}
           </Text>
         </Card>
       </Layout>

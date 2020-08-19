@@ -1,21 +1,21 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
-import {Validators} from './utils/Validators';
+import { Validators } from './utils/Validators';
 import Settings from './components/Settings';
 import Home from './components/Home';
 import AddCard from './components/AddCard';
 import DetailsCard from './components/DetailsCard';
 import * as eva from '@eva-design/eva';
-import {ApplicationProvider} from '@ui-kitten/components';
+import { ApplicationProvider } from '@ui-kitten/components';
 import ImagePicker from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
 import SplashScreen from 'react-native-splash-screen';
-import {LANGUAGE_OPTIONS} from './utils/languageOptions';
-import {options} from './utils/imageOptions';
+import { LANGUAGE_OPTIONS } from './utils/languageOptions';
+import { options } from './utils/imageOptions';
 
 const Tab = createBottomTabNavigator();
 
@@ -131,7 +131,7 @@ function App() {
       } else {
         // console.log(response);
         const photo = `data:image/jpeg;base64,${response.data}`;
-        setSingleCard({...singleCard, photo});
+        setSingleCard({ ...singleCard, photo });
       }
     });
   };
@@ -163,13 +163,11 @@ function App() {
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName="Strona główna"
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
               if (route.name === 'Strona główna') iconName = 'home';
-              else if (route.name === 'Dodaj wizytówke')
-                iconName = 'add-outline';
-              else if (route.name === 'Cała wizytówka')
-                iconName = 'wallet-outline';
+              else if (route.name === 'Dodaj wizytówke') iconName = 'add-outline';
+              else if (route.name === 'Cała wizytówka') iconName = 'wallet-outline';
 
               return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -210,21 +208,22 @@ function App() {
               />
             )}
           </Tab.Screen>
-          {detailsAvailable &&<Tab.Screen
-            name="Cała wizytówka"
-            listeners={{
-              tabPress: () => handleOrientation('details'),
-            }}>
-            {(props) => (
-              <DetailsCard
-                {...props}
-                _editCard={_editCard}
-                setError={setError}
-                language={language}
-              />
-            )}
-          </Tab.Screen>
-          }
+          {detailsAvailable && (
+            <Tab.Screen
+              name="Cała wizytówka"
+              listeners={{
+                tabPress: () => handleOrientation('details'),
+              }}>
+              {(props) => (
+                <DetailsCard
+                  {...props}
+                  _editCard={_editCard}
+                  setError={setError}
+                  language={language}
+                />
+              )}
+            </Tab.Screen>
+          )}
         </Tab.Navigator>
       </NavigationContainer>
 

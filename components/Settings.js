@@ -1,16 +1,9 @@
 import React from 'react';
-import {View, Switch, StyleSheet, Image} from 'react-native';
-import {Popover, Layout} from '@ui-kitten/components';
+import { View, Switch, StyleSheet, Image } from 'react-native';
+import { Popover, Layout } from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Settings = ({
-  visible,
-  theme,
-  language,
-  toggleTheme,
-  toggleLanguage,
-  setVisible,
-}) => {
+const Settings = ({ visible, theme, language, toggleTheme, toggleLanguage, setVisible }) => {
   const renderMenuButton = () => (
     <Ionicons
       name={'settings-outline'}
@@ -31,7 +24,7 @@ const Settings = ({
           <View style={styles.popoverWrapper}>
             <Ionicons name={'sunny-outline'} size={19} color={'#ffbf00'} />
             <Switch
-              trackColor={{false: '#bfc7c1', true: '#bfc7c1'}}
+              trackColor={{ false: '#bfc7c1', true: '#bfc7c1' }}
               thumbColor={theme === 'light' ? '#ffbf00' : 'blue'}
               ios_backgroundColor="#bfc7c1"
               onValueChange={toggleTheme}
@@ -41,29 +34,17 @@ const Settings = ({
           </View>
 
           <View style={styles.popoverWrapper}>
-            <Image
-              style={{width: 25, height: 17}}
-              source={require('../assets/pl_flag.png')}
-            />
+            <Image style={{ width: 25, height: 17 }} source={require('../assets/pl_flag.png')} />
             <Switch
-              trackColor={{false: '#bfc7c1', true: '#bfc7c1'}}
+              trackColor={{ false: '#bfc7c1', true: '#bfc7c1' }}
               thumbColor={
-                language.no_businesscards === 'No business cards available'
-                  ? 'blue'
-                  : '#ffbf00'
+                language.no_businesscards === 'No business cards available' ? 'blue' : '#ffbf00'
               }
               ios_backgroundColor="#bfc7c1"
               onValueChange={toggleLanguage}
-              value={
-                language.no_businesscards === 'No business cards available'
-                  ? true
-                  : false
-              }
+              value={language.no_businesscards === 'No business cards available' ? true : false}
             />
-            <Image
-              style={{width: 25, height: 17}}
-              source={require('../assets/eng_flag.png')}
-            />
+            <Image style={{ width: 25, height: 17 }} source={require('../assets/eng_flag.png')} />
           </View>
         </Layout>
       </Popover>
