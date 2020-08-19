@@ -7,212 +7,205 @@ import ImagePicker from 'react-native-image-picker';
 import { options } from '../utils/imageOptions';
 
 const DetailsCard = ({ route, navigation, _editCard, setError, language }) => {
-  if (route.params) {
-    const { details } = route.params;
-    const [card, setCard] = React.useState(details);
-    const [edit, setEdit] = React.useState(false);
+  const { details } = route.params;
+  const [card, setCard] = React.useState(details);
+  const [edit, setEdit] = React.useState(false);
 
-    React.useEffect(() => {
-      setCard(details);
-    }, [details]);
+  React.useEffect(() => {
+    setCard(details);
+  }, [details]);
 
-    React.useEffect(() => {
-      const unsubscribe = navigation.addListener('focus', () => {
-        Orientation.unlockAllOrientations();
-        Orientation.lockToLandscape();
-      });
-
-      return () => unsubscribe();
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      Orientation.unlockAllOrientations();
+      Orientation.lockToLandscape();
     });
 
-    _pickCardFromGalery = () => {
-      ImagePicker.launchImageLibrary(options, (response) => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-          setError('User cancelled image picker');
-        } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-          setError(response.error);
-        } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-          setError(response.customButton);
-        } else {
-          // const photo = response.uri;
-          const photo = `data:image/jpeg;base64,${response.data}`;
-          setCard({ ...card, photo });
-        }
-      });
-    };
+    return () => unsubscribe();
+  });
 
-    const Header = (props) => (
-      <View {...props} style={styles.headerWrapper}>
-        <Text category="h2" style={styles.title}>
-          {details.name}
-        </Text>
-        <Button
-          style={[styles.btn, { right: '10%' }]}
-          status="warning"
-          onPress={() => setEdit(!edit)}>
-          {edit ? language.edit.return_btn : language.edit.edit_btn}
-        </Button>
-        <Button
-          style={[styles.btn, { left: '10%' }]}
-          status="success"
-          disabled={!edit}
-          onPress={() => {
-            _editCard(card);
-            setEdit(false);
-            navigation.navigate('Strona główna');
-          }}>
-          {language.edit.accept_btn}
-        </Button>
+  const _pickCardFromGalery = () => {
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+        setError('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        setError(response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        setError(response.customButton);
+      } else {
+        // const photo = response.uri;
+        const photo = `data:image/jpeg;base64,${response.data}`;
+        setCard({ ...card, photo });
+      }
+    });
+  };
+
+  const Header = (props) => (
+    <View {...props} style={styles.headerWrapper}>
+      <Text category="h2" style={styles.title}>
+        {details.name}
+      </Text>
+      <Button
+        style={[styles.btn, { right: '10%' }]}
+        status="warning"
+        onPress={() => setEdit(!edit)}>
+        {edit ? language.edit.return_btn : language.edit.edit_btn}
+      </Button>
+      <Button
+        style={[styles.btn, { left: '10%' }]}
+        status="success"
+        disabled={!edit}
+        onPress={() => {
+          _editCard(card);
+          setEdit(false);
+          navigation.navigate('Strona główna');
+        }}>
+        {language.edit.accept_btn}
+      </Button>
+    </View>
+  );
+
+  const content = (
+    <Card header={Header}>
+      <View style={[styles.wrapper, { paddingBottom: 10 }]}>
+        <View style={styles.insideWrapper}>
+          <Icon name="road" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Text style={styles.text}>{details.street} </Text>
+          <Text style={styles.text}>{details.postalCode} </Text>
+        </View>
+
+        <View style={styles.insideWrapper}>
+          <Icon name="building" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Text style={styles.text}>{details.city}</Text>
+        </View>
       </View>
-    );
 
-    const content = (
-      <Card header={Header}>
-        <View style={[styles.wrapper, { paddingBottom: 10 }]}>
-          <View style={styles.insideWrapper}>
-            <Icon name="road" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Text style={styles.text}>{details.street} </Text>
-            <Text style={styles.text}>{details.postalCode} </Text>
-          </View>
-
-          <View style={styles.insideWrapper}>
-            <Icon name="building" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Text style={styles.text}>{details.city}</Text>
-          </View>
+      <View style={styles.wrapper}>
+        <View style={styles.insideWrapper}>
+          <Icon name="envelope" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.email}</Text>
         </View>
 
-        <View style={styles.wrapper}>
-          <View style={styles.insideWrapper}>
-            <Icon name="envelope" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.email}</Text>
-          </View>
-
-          <View style={styles.insideWrapper}>
-            <Icon name="google" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Text
-              style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}
-              onPress={() => Linking.openURL('https://' + details.website)}>
-              {details.website}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.wrapper}>
-          <View style={styles.insideWrapper}>
-            <Icon name="phone" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.phone}</Text>
-          </View>
-
-          <View style={styles.insideWrapper}>
-            <Icon name="id-card" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>
-              {details.taxNumber}
-            </Text>
-          </View>
-        </View>
-
-        <Divider />
-        {details.photo && <Image style={styles.image} source={{ uri: details.photo }} />}
-      </Card>
-    );
-
-    const editable_content = (
-      <Card header={Header}>
-        <View style={[styles.wrapper, { paddingBottom: 10 }]}>
-          <View style={styles.insideWrapper}>
-            <Icon name="road" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Input
-              style={styles.text}
-              value={card.street}
-              onChangeText={(street) => setCard({ ...card, street })}
-            />
-            <Input
-              style={styles.text}
-              value={card.postalCode}
-              onChangeText={(postalCode) => setCard({ ...card, postalCode })}
-            />
-          </View>
-
-          <View style={styles.insideWrapper}>
-            <Icon name="building" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Input
-              style={styles.text}
-              value={card.city}
-              onChangeText={(city) => setCard({ ...card, city })}
-            />
-          </View>
-        </View>
-
-        <View style={styles.wrapper}>
-          <View style={styles.insideWrapper}>
-            <Icon name="envelope" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Input
-              style={styles.text}
-              value={card.email}
-              onChangeText={(email) => setCard({ ...card, email })}
-            />
-          </View>
-
-          <View style={styles.insideWrapper}>
-            <Icon name="google" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Input
-              style={styles.text}
-              value={card.website}
-              onChangeText={(website) => setCard({ ...card, website })}
-            />
-          </View>
-        </View>
-
-        <View style={styles.wrapper}>
-          <View style={styles.insideWrapper}>
-            <Icon name="phone" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Input
-              style={styles.text}
-              value={card.phone}
-              onChangeText={(phone) => setCard({ ...card, phone })}
-            />
-          </View>
-
-          <View style={styles.insideWrapper}>
-            <Icon name="id-card" size={20} color="grey" style={{ paddingRight: 5 }} />
-            <Input
-              style={styles.text}
-              value={card.taxNumber}
-              onChangeText={(taxNumber) => setCard({ ...card, taxNumber })}
-            />
-          </View>
-        </View>
-
-        <Divider />
-        {card.photo && <Image style={styles.image} source={{ uri: card.photo }} />}
-        <Button
-          style={{ width: 150, alignSelf: 'center' }}
-          status="info"
-          onPress={() => _pickCardFromGalery()}>
-          {card.photo ? language.edit.replace_image_btn : language.edit.add_image_btn}
-        </Button>
-      </Card>
-    );
-
-    return (
-      <Layout level="4" style={styles.container}>
-        <ScrollView>{edit ? editable_content : content}</ScrollView>
-      </Layout>
-    );
-  } else {
-    return (
-      <Layout level="4" style={styles.container}>
-        <Card style={{ flex: 1, justifyContent: 'center' }}>
-          <Text category="h3" style={{ textAlign: 'center' }}>
-            {language.edit_description}
+        <View style={styles.insideWrapper}>
+          <Icon name="google" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Text
+            style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}
+            onPress={() => Linking.openURL('https://' + details.website)}>
+            {details.website}
           </Text>
-        </Card>
-      </Layout>
-    );
-  }
+        </View>
+      </View>
+
+      <View style={styles.wrapper}>
+        <View style={styles.insideWrapper}>
+          <Icon name="phone" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.phone}</Text>
+        </View>
+
+        <View style={styles.insideWrapper}>
+          <Icon name="id-card" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Text style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}>{details.taxNumber}</Text>
+        </View>
+      </View>
+
+      <Divider />
+      {details.photo && <Image style={styles.image} source={{ uri: details.photo }} />}
+    </Card>
+  );
+
+  const editable_content = (
+    <Card header={Header}>
+      <View style={[styles.wrapper, { paddingBottom: 10 }]}>
+        <View style={styles.insideWrapper}>
+          <Icon name="road" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Input
+            style={styles.text}
+            placeholder={language.add.street}
+            value={card.street}
+            onChangeText={(street) => setCard({ ...card, street })}
+          />
+          <Input
+            style={styles.text}
+            placeholder={language.add.postal_code}
+            value={card.postalCode}
+            onChangeText={(postalCode) => setCard({ ...card, postalCode })}
+          />
+        </View>
+
+        <View style={styles.insideWrapper}>
+          <Icon name="building" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Input
+            style={styles.text}
+            placeholder={language.add.city}
+            value={card.city}
+            onChangeText={(city) => setCard({ ...card, city })}
+          />
+        </View>
+      </View>
+
+      <View style={styles.wrapper}>
+        <View style={styles.insideWrapper}>
+          <Icon name="envelope" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Input
+            style={styles.text}
+            placeholder={language.add.email}
+            value={card.email}
+            onChangeText={(email) => setCard({ ...card, email })}
+          />
+        </View>
+
+        <View style={styles.insideWrapper}>
+          <Icon name="google" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Input
+            style={styles.text}
+            placeholder={language.add.website}
+            value={card.website}
+            onChangeText={(website) => setCard({ ...card, website })}
+          />
+        </View>
+      </View>
+
+      <View style={styles.wrapper}>
+        <View style={styles.insideWrapper}>
+          <Icon name="phone" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Input
+            style={styles.text}
+            placeholder={language.add.phone}
+            value={card.phone}
+            onChangeText={(phone) => setCard({ ...card, phone })}
+          />
+        </View>
+
+        <View style={styles.insideWrapper}>
+          <Icon name="id-card" size={20} color="grey" style={{ paddingRight: 5 }} />
+          <Input
+            style={styles.text}
+            placeholder={language.add.tax_number}
+            value={card.taxNumber}
+            onChangeText={(taxNumber) => setCard({ ...card, taxNumber })}
+          />
+        </View>
+      </View>
+
+      <Divider />
+      {card.photo && <Image style={styles.image} source={{ uri: card.photo }} />}
+      <Button
+        style={{ width: 150, alignSelf: 'center' }}
+        status="info"
+        onPress={() => _pickCardFromGalery()}>
+        {card.photo ? language.edit.replace_image_btn : language.edit.add_image_btn}
+      </Button>
+    </Card>
+  );
+
+  return (
+    <Layout level="4" style={styles.container}>
+      <ScrollView>{edit ? editable_content : content}</ScrollView>
+    </Layout>
+  );
 };
 
 export default DetailsCard;
