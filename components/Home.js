@@ -4,7 +4,7 @@ import { Layout, Card, Text, Divider, Button } from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
 
-const Home = ({ navigation, cards, _removeCard, setDetailsAvailable, language }) => {
+const Home = ({ navigation, cards, confirmRemoveCard, setDetailsAvailable, language }) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       Orientation.unlockAllOrientations();
@@ -28,7 +28,7 @@ const Home = ({ navigation, cards, _removeCard, setDetailsAvailable, language })
                 onPress={() => {
                   setDetailsAvailable(false);
 
-                  _removeCard(card.name);
+                  confirmRemoveCard(card.name);
                 }}>
                 <Ionicons name={'trash-outline'} size={16} color={'red'} />
               </TouchableOpacity>
@@ -37,7 +37,7 @@ const Home = ({ navigation, cards, _removeCard, setDetailsAvailable, language })
                   setDetailsAvailable(true);
                   setTimeout(
                     () =>
-                      navigation.navigate('Cała wizytówka', {
+                      navigation.navigate(language.menu.details, {
                         itemId: index,
                         details: card,
                       }),

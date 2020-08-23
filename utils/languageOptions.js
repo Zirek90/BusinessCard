@@ -3,6 +3,11 @@ export const LANGUAGE_OPTIONS = {
         "no_businesscards": "No business cards available",
         "home_description": "Please click at business card to see details",
         "edit_description": "Please choose business card from Home to see details",
+        "menu": {
+            "home": "Home",
+            "add": "Add business card",
+            "details": "Details"
+        },
         "home": {
             "phone": "Phone:",
             "email": "E-mail:",
@@ -17,29 +22,38 @@ export const LANGUAGE_OPTIONS = {
             "website": "Website",
             "email": "E-mail",
             "tax_number": "Tax number",
-            "button": "Add business card"
+            "button": "Add business card",
+            "success_title": "Success",
+            "success_content": "Business card was added"
         },
-        "menu": [
-            "Home",
-            "Add business card",
-            "Details"
-        ],
         "edit": {
             "accept_btn": "Accept",
             "edit_btn": "Edit",
             "return_btn": "Return",
             "replace_image_btn": "Replace photo",
-            "add_image_btn": "Add photo"
+            "add_image_btn": "Add photo",
+            "success_title": "Success",
+            "success_content": "Business card was edited"
         },
-        "add_alert": "Business card was saved",
-        "edit_alert": "Business card was edited",
-        "delete_alert": "Business card was deleted"
+        "remove": {
+            "confirm_title": "Remove business card",
+            "confirm_content": "Are you sure you wish to remove this business card?",
+            "confirm_yes": "Yes",
+            "confirm_no": "No",
+            "success_title": "Success",
+            "success_content": "Business card was removed"
+        }
     },
 
     "POLISH": {
         "no_businesscards": "Brak wizytówek",
         "home_description": "Kliknij w wizytówke aby zobaczyć więcej",
         "edit_description": "Proszę wybierz wizytówke z ekranu głównego aby zobaczyć szczegóły",
+        "menu": {
+            "home": "Strona główna",
+            "add": "Dodaj wizytówkę",
+            "details": "Cała wizytówka"
+        },
         "home": {
             "phone": "Telefon:",
             "email": "E-mail:",
@@ -54,22 +68,26 @@ export const LANGUAGE_OPTIONS = {
             "website": "Strona internetowa",
             "email": "E-mail",
             "tax_number": "NIP",
-            "button": "Dodaj wizytówkę"
+            "button": "Dodaj wizytówkę",
+            "success_title": "Sukces",
+            "success_content": "Wizytówka została zapisana"
         },
-        "menu": [
-            "Strona główna",
-            "Dodaj wizytówkę",
-            "Cała wizytówka"
-        ],
         "edit": {
             "accept_btn": "Akceptuj",
             "edit_btn": "Edytuj",
             "return_btn": "Powrót",
             "replace_image_btn": "Podmień zdjęcie",
-            "add_image_btn": "Dodaj zdjęcie"
+            "add_image_btn": "Dodaj zdjęcie",
+            "success_title": "Sukces",
+            "success_content": "Wizytówka została zedytowana"
         },
-        "add_alert": "Wizytówka została zapisana",
-        "edit_alert": "Wizytówka została zedytowana",
-        "delete_alert": "Wizytówka została usunięta"
+        "remove": {
+            "confirm_title": "Usuń wizytówkę",
+            "confirm_content": "Czy jesteś pewny że chcesz usunąć wizytówkę?",
+            "confirm_yes": "Tak",
+            "confirm_no": "Nie",
+            "success_title": "Sukces",
+            "success_content": "Wizytówka została usunięta"
+        }
     } 
 }

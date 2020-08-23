@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import { Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -40,19 +41,30 @@ function App() {
 
   React.useEffect(() => {
     SplashScreen.hide();
+
+    const manageInitialThemeAndLanguage = async () => {
+      const t = await AsyncStorage.getItem('theme');
+      const l = await AsyncStorage.getItem('language');
+
+      if (t) setTheme(t);
+      if (l) setLanguage(JSON.parse(l));
+    };
+    manageInitialThemeAndLanguage();
   }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = async () => {
     const nextTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(nextTheme);
+    await AsyncStorage.setItem('theme', nextTheme);
   };
 
-  const toggleLanguage = () => {
+  const toggleLanguage = async () => {
     const nextLanguage =
       language.no_businesscards === 'No business cards available'
         ? LANGUAGE_OPTIONS.POLISH
         : LANGUAGE_OPTIONS.ENGLISH;
     setLanguage(nextLanguage);
+    await AsyncStorage.setItem('language', JSON.stringify(nextLanguage));
   };
 
   const handleOrientation = (mode) => {
@@ -66,10 +78,21 @@ function App() {
     _fetchCards();
   }, []);
 
+  const selectCardsKeysForFetch = async () => {
+    const keys = await AsyncStorage.getAllKeys();
+    const t = keys.indexOf('theme');
+    const l = keys.indexOf('language');
+    if (t > -1) keys.splice(t, 1);
+    if (l > -1) keys.splice(l, 1);
+    return keys;
+  };
+
   const _fetchCards = async () => {
     try {
       const allCards = [];
-      const keys = await AsyncStorage.getAllKeys();
+      // const keys = await AsyncStorage.getAllKeys();
+      const keys = await selectCardsKeysForFetch();
+
       await AsyncStorage.multiGet(keys, (err, stores) => {
         stores.map((result, i, store) => {
           // let key = store[i][0];
@@ -98,7 +121,6 @@ function App() {
       if (errorList.flat().length) return setError(errorList.flat());
 
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
-      alert(language.add_alert);
       setSingleCard({
         name: '',
         street: '',
@@ -111,6 +133,7 @@ function App() {
         photo: null,
       });
       _fetchCards();
+      Alert.alert(language.add.success_title, language.add.success_content);
     } catch (err) {
       console.log(err);
       setError(err);
@@ -139,7 +162,7 @@ function App() {
   const _editCard = async (card) => {
     try {
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
-      alert(language.edit_alert);
+      Alert.alert(language.edit.success_title, language.edit.success_content);
       _fetchCards();
     } catch (err) {
       console.log(err);
@@ -147,10 +170,25 @@ function App() {
     }
   };
 
+  const confirmRemoveCard = (card) => {
+    Alert.alert(
+      language.remove.confirm_title,
+      language.remove.confirm_content,
+      [
+        {
+          text: language.remove.confirm_no,
+          onPress: () => null,
+        },
+        { text: language.remove.yes, onPress: () => _removeCard(card) },
+      ],
+      { cancelable: false },
+    );
+  };
+
   const _removeCard = async (card) => {
     try {
       await AsyncStorage.removeItem(card);
-      alert(language.delete_alert);
+      Alert.alert(language.remove.success_title, language.remove.success_content);
       _fetchCards();
     } catch (err) {
       console.log(err);
@@ -162,12 +200,12 @@ function App() {
     <ApplicationProvider {...eva} theme={eva[theme]}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Strona główna"
+          initialRouteName={language.menu.home}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
-              if (route.name === 'Strona główna') iconName = 'home';
-              else if (route.name === 'Dodaj wizytówke') iconName = 'add-outline';
-              else if (route.name === 'Cała wizytówka') iconName = 'wallet-outline';
+              if (route.name === language.menu.home) iconName = 'home';
+              else if (route.name === language.menu.add) iconName = 'add-outline';
+              else if (route.name === language.menu.details) iconName = 'wallet-outline';
 
               return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -177,7 +215,7 @@ function App() {
             inactiveTintColor: 'gray',
           }}>
           <Tab.Screen
-            name="Strona główna"
+            name={language.menu.home}
             listeners={{
               tabPress: () => handleOrientation('home'),
             }}>
@@ -185,14 +223,14 @@ function App() {
               <Home
                 {...props}
                 cards={cards}
-                _removeCard={_removeCard}
+                confirmRemoveCard={confirmRemoveCard}
                 setDetailsAvailable={setDetailsAvailable}
                 language={language}
               />
             )}
           </Tab.Screen>
           <Tab.Screen
-            name="Dodaj wizytówke"
+            name={language.menu.add}
             listeners={{
               tabPress: () => handleOrientation('add'),
             }}>
@@ -210,7 +248,7 @@ function App() {
           </Tab.Screen>
           {detailsAvailable && (
             <Tab.Screen
-              name="Cała wizytówka"
+              name={language.menu.details}
               listeners={{
                 tabPress: () => handleOrientation('details'),
               }}>
