@@ -82,7 +82,7 @@ const AddCard = ({
           style={{ alignSelf: 'flex-end' }}
           onPress={() =>
             _addCard()
-              .then(() => singleCard.name && navigation.navigate(language.menu.home))
+              .then(() => singleCard.name && navigation.navigate('Home'))
               .catch((e) => console.log("Couldn't add card"))
           }>
           {language.add.button}

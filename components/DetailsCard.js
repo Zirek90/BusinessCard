@@ -9,14 +9,14 @@ import { options } from '../utils/imageOptions';
 const DetailsCard = ({ route, navigation, _editCard, setError, language }) => {
   // UGLY HACK TO BE FIXED LATER
   if (route.params) {
-    const details = route.params ? route.params.details : null;
+    const { details } = route.params;
     const [card, setCard] = React.useState(details);
+    console.log(card, details);
     const [edit, setEdit] = React.useState(false);
 
     React.useEffect(() => {
       if (details) {
         setCard(details);
-        console.log('details', details);
       }
     }, [details]);
 
@@ -66,7 +66,7 @@ const DetailsCard = ({ route, navigation, _editCard, setError, language }) => {
           onPress={() => {
             _editCard(card);
             setEdit(false);
-            navigation.navigate(language.menu.home);
+            navigation.navigate('Home');
           }}>
           {language.edit.accept_btn}
         </Button>
@@ -210,11 +210,10 @@ const DetailsCard = ({ route, navigation, _editCard, setError, language }) => {
 
     return (
       <Layout level="4" style={styles.container}>
-        {console.log(details)}
         <ScrollView>{edit ? editable_content : content}</ScrollView>
       </Layout>
     );
-  } else return <Text>Nothing here</Text>;
+  } else return <Text>No data</Text>;
 };
 
 export default DetailsCard;

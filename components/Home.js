@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { Layout, Card, Text, Divider, Button } from '@ui-kitten/components';
+import { Layout, Card, Text, Divider } from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Orientation from 'react-native-orientation';
 
@@ -33,16 +33,13 @@ const Home = ({ navigation, cards, confirmRemoveCard, setDetailsAvailable, langu
                 <Ionicons name={'trash-outline'} size={16} color={'red'} />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  setDetailsAvailable(true);
-                  setTimeout(
-                    () =>
-                      navigation.navigate(language.menu.details, {
-                        itemId: index,
-                        details: card,
-                      }),
-                    500,
-                  );
+                onPress={async () => {
+                  await setDetailsAvailable(true);
+
+                  await navigation.navigate('Details', {
+                    itemId: index,
+                    details: card,
+                  })
                 }}>
                 <Text category="h4" style={{ textAlign: 'center', marginTop: -10 }}>
                   {card.name}

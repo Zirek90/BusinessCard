@@ -189,6 +189,7 @@ function App() {
     try {
       await AsyncStorage.removeItem(card);
       Alert.alert(language.remove.success_title, language.remove.success_content);
+      setDetailsAvailable(false);
       _fetchCards();
     } catch (err) {
       console.log(err);
@@ -203,9 +204,9 @@ function App() {
           initialRouteName={language.menu.home}
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
-              if (route.name === language.menu.home) iconName = 'home';
-              else if (route.name === language.menu.add) iconName = 'add-outline';
-              else if (route.name === language.menu.details) iconName = 'wallet-outline';
+              if (route.name === 'Home') iconName = 'home';
+              else if (route.name === 'Add business card') iconName = 'add-outline';
+              else if (route.name === 'Details') iconName = 'wallet-outline';
 
               return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -215,7 +216,10 @@ function App() {
             inactiveTintColor: 'gray',
           }}>
           <Tab.Screen
-            name={language.menu.home}
+            name="Home"
+            options={{
+              title: language.menu.home,
+            }}
             listeners={{
               tabPress: () => handleOrientation('home'),
             }}>
@@ -230,7 +234,10 @@ function App() {
             )}
           </Tab.Screen>
           <Tab.Screen
-            name={language.menu.add}
+            name="Add business card"
+            options={{
+              title: language.menu.add,
+            }}
             listeners={{
               tabPress: () => handleOrientation('add'),
             }}>
@@ -248,7 +255,10 @@ function App() {
           </Tab.Screen>
           {detailsAvailable && (
             <Tab.Screen
-              name={language.menu.details}
+              name="Details"
+              options={{
+                title: language.menu.details,
+              }}
               listeners={{
                 tabPress: () => handleOrientation('details'),
               }}>
