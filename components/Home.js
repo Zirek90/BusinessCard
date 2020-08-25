@@ -39,7 +39,7 @@ const Home = ({ navigation, cards, confirmRemoveCard, setDetailsAvailable, langu
                   await navigation.navigate('Details', {
                     itemId: index,
                     details: card,
-                  })
+                  });
                 }}>
                 <Text category="h4" style={{ textAlign: 'center', marginTop: -10 }}>
                   {card.name}
