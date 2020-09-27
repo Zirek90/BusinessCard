@@ -90,6 +90,7 @@ function App() {
       errorList.push(Validators.nameValidator(card.name));
       errorList.push(Validators.postalCodeValidator(card.postalCode));
       errorList.push(Validators.phoneValidator(card.phone));
+      errorList.push(Validators.websiteValidator(card.website));
       errorList.push(Validators.emailValidator(card.email));
       errorList.push(Validators.taxNumberValidator(card.taxNumber));
       if (errorList.flat().length) {

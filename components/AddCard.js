@@ -13,7 +13,7 @@ const AddCard = ({
   language,
 }) => (
   <Layout style={styles.container} level="4">
-    <ScrollView style={{width: '100%'}}>
+    <ScrollView style={{ width: '100%' }}>
       <Card style={styles.cardWrapper}>
         <Input
           style={styles.inputs}
@@ -57,7 +57,7 @@ const AddCard = ({
           value={singleCard.taxNumber}
           onChangeText={(taxNumber) => setSingleCard({ ...singleCard, taxNumber })}
         />
-        <View style={{ flexDirection: 'column', width: '80%' }}>
+        <View style={{ flexDirection: 'column' }}>
           {error.length
             ? error.map((err, i) => (
                 <Text key={i} style={{ color: 'red' }}>

@@ -30,6 +30,16 @@ const phoneValidator = (data) => {
     return error
 }
 
+const websiteValidator = (data) => {
+    const error = [];
+    if (data) {
+        const startOfUrl = data.substring(0,3);
+        if (startOfUrl.toLowerCase() === "htt" || startOfUrl.toLowerCase() === "www") error.push("Wpisz strone internetowa z pominięciem http/https/www");
+    }
+    
+    return error
+}
+
 const emailValidator = (data) => {
     const error = [];
     const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -53,6 +63,7 @@ export const Validators = {
     nameValidator,
     postalCodeValidator,
     phoneValidator,
+    websiteValidator,
     emailValidator,
     taxNumberValidator
 }
