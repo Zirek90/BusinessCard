@@ -1,4 +1,3 @@
-
 const nameValidator = (data) => {
     const error = [];
     if (data) {
@@ -9,14 +8,24 @@ const nameValidator = (data) => {
     return error
 }
 
+const postalCodeValidator = (data) => {
+    const error = [];
+    const postal = /^[0-9-]*$/
+    if (data) {
+        if (data.length !== 5 && data.length !== 6) error.push("Kod pocztowy musi mieć pomiędzy 5 a 6 znaków");
+        if (!postal.test(data)) error.push("Kod pocztowy powinien zawierać tylko liczby i myślnik");
+    }
+
+    return error
+}
+
 const phoneValidator = (data) => {
     const error = [];
     const isNumber = /^\d+$/;
     if (data) {
-        if (data.length < 6) error.push("Numer telefonu musi mieć co najmniej 6 znaki");
-        if (!isNumber.test(data)) error.push("Numer telefonu musi zawierac tylko cyfry");
+        if (data.length < 5) error.push("Numer telefonu musi mieć co najmniej 6 znaków");
+        if (!isNumber.test(data)) error.push("Numer telefonu musi zawierać tylko cyfry");
     }
-    // else error.push("Prosze wpisac numer telefonu")
 
     return error
 }
@@ -25,10 +34,8 @@ const emailValidator = (data) => {
     const error = [];
     const isEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (data) {
-        if (data.length < 5) error.push("Email musi mieć co najmniej 6 znaki");
         if (!isEmail.test(data)) error.push("Email nie ma poprawnego formatu");
     }
-    // else error.push("Prosze wpisac email")
 
     return error
 }
@@ -36,15 +43,15 @@ const emailValidator = (data) => {
 const taxNumberValidator = (data) => {
     const error = [];
     if (data) {
-        if (data.length < 6) error.push("NIP musi mieć co najmniej 6 znaki");
+        if (data.length < 10) error.push("NIP musi mieć co najmniej 10 znaki");
     }
-    // else error.push("Prosze wpisac NIP")
     
     return error
 }
 
 export const Validators = {
     nameValidator,
+    postalCodeValidator,
     phoneValidator,
     emailValidator,
     taxNumberValidator

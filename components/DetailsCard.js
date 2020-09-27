@@ -82,7 +82,7 @@ const DetailsCard = ({ route, navigation, _editCard, setError, language }) => {
           <Icon name="google" size={20} color="grey" style={styles.icons} />
           <Text
             style={{ fontSize: 20, paddingLeft: 10, paddingTop: 5 }}
-            onPress={() => Linking.openURL('https://' + details.website)}>
+            onPress={() => Linking.openURL('https://www.' + details.website)}>
             {details.website}
           </Text>
         </View>
