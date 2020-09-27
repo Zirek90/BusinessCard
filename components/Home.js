@@ -2,17 +2,10 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Layout, Card, Text, Divider } from '@ui-kitten/components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Orientation from 'react-native-orientation';
+import { useOrientation } from '../utils/useOrientation';
 
 const Home = ({ navigation, cards, confirmRemoveCard, setDetailsAvailable, language }) => {
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      Orientation.unlockAllOrientations();
-      Orientation.lockToPortrait();
-    });
-
-    return () => unsubscribe();
-  });
+  useOrientation(navigation, 'home');
 
   return (
     <Layout style={styles.container} level="4">
@@ -47,12 +40,6 @@ const Home = ({ navigation, cards, confirmRemoveCard, setDetailsAvailable, langu
                 <Divider />
                 <View style={styles.wrappers}>
                   <View>
-                    <Text>
-                      {language.home.phone} {card.phone}
-                    </Text>
-                    <Text>
-                      {language.home.email} {card.email}
-                    </Text>
                     <Text>
                       {language.home.tax_number} {card.taxNumber}
                     </Text>
@@ -99,6 +86,7 @@ const styles = StyleSheet.create({
   wrappers: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 5,
   },
   btn: {
@@ -109,8 +97,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   images: {
-    width: 100,
-    height: 60,
+    width: 90,
+    height: 50,
     resizeMode: 'contain',
   },
   textNoCards: {

@@ -33,7 +33,8 @@ export const LANGUAGE_OPTIONS = {
             "replace_image_btn": "Replace photo",
             "add_image_btn": "Add photo",
             "success_title": "Success",
-            "success_content": "Business card was edited"
+            "success_content": "Business card was edited",
+            "tax_number": "Tax Number"
         },
         "remove": {
             "confirm_title": "Remove business card",
@@ -42,12 +43,12 @@ export const LANGUAGE_OPTIONS = {
             "confirm_no": "No",
             "success_title": "Success",
             "success_content": "Business card was removed"
-        }
+        },
     },
 
     "POLISH": {
         "no_businesscards": "Brak wizytówek",
-        "home_description": "Kliknij w wizytówke aby zobaczyć więcej",
+        "home_description": "Kliknij w wizytówkę aby zobaczyć więcej",
         "edit_description": "Proszę wybierz wizytówke z ekranu głównego aby zobaczyć szczegóły",
         "menu": {
             "home": "Strona główna",
@@ -79,7 +80,8 @@ export const LANGUAGE_OPTIONS = {
             "replace_image_btn": "Podmień zdjęcie",
             "add_image_btn": "Dodaj zdjęcie",
             "success_title": "Sukces",
-            "success_content": "Wizytówka została zedytowana"
+            "success_content": "Wizytówka została zedytowana",
+            "tax_number": "NIP"
         },
         "remove": {
             "confirm_title": "Usuń wizytówkę",
@@ -88,6 +90,6 @@ export const LANGUAGE_OPTIONS = {
             "confirm_no": "Nie",
             "success_title": "Sukces",
             "success_content": "Wizytówka została usunięta"
-        }
+        },
     } 
 }

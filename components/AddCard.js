@@ -56,7 +56,7 @@ const AddCard = ({
         value={singleCard.taxNumber}
         onChangeText={(taxNumber) => setSingleCard({ ...singleCard, taxNumber })}
       />
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'column', alignItems: 'center' }}>
         {error.length
           ? error.map((err, i) => (
               <Text key={i} style={{ color: 'red' }}>
@@ -83,7 +83,7 @@ const AddCard = ({
           onPress={() =>
             _addCard()
               .then(() => singleCard.name && navigation.navigate('Home'))
-              .catch((e) => console.log("Couldn't add card"))
+              .catch(() => alert("Couldn't add card"))
           }>
           {language.add.button}
         </Button>

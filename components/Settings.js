@@ -34,7 +34,7 @@ const Settings = ({ visible, theme, language, toggleTheme, toggleLanguage, setVi
           </View>
 
           <View style={styles.popoverWrapper}>
-            <Image style={{ width: 25, height: 17 }} source={require('../assets/pl_flag.png')} />
+            <Image style={styles.image} source={require('../assets/pl_flag.png')} />
             <Switch
               trackColor={{ false: '#bfc7c1', true: '#bfc7c1' }}
               thumbColor={
@@ -44,7 +44,7 @@ const Settings = ({ visible, theme, language, toggleTheme, toggleLanguage, setVi
               onValueChange={toggleLanguage}
               value={language.no_businesscards === 'No business cards available' ? true : false}
             />
-            <Image style={{ width: 25, height: 17 }} source={require('../assets/eng_flag.png')} />
+            <Image style={styles.image} source={require('../assets/eng_flag.png')} />
           </View>
         </Layout>
       </Popover>
@@ -73,5 +73,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     width: 100,
+  },
+  image: {
+    width: 25,
+    height: 17,
   },
 });
