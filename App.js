@@ -93,9 +93,9 @@ function App() {
       errorList.push(Validators.emailValidator(card.email));
       errorList.push(Validators.taxNumberValidator(card.taxNumber));
       if (errorList.flat().length) {
-        setError(errorList.flat())
-        return "Error"
-      };
+        setError(errorList.flat());
+        return 'Error';
+      }
 
       await AsyncStorage.setItem(card.name, JSON.stringify(card));
       setSingleCard({
