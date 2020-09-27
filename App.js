@@ -87,12 +87,12 @@ function App() {
       const errorList = [];
       const card = singleCard;
 
-      errorList.push(Validators.nameValidator(card.name));
-      errorList.push(Validators.postalCodeValidator(card.postalCode));
-      errorList.push(Validators.phoneValidator(card.phone));
-      errorList.push(Validators.websiteValidator(card.website));
-      errorList.push(Validators.emailValidator(card.email));
-      errorList.push(Validators.taxNumberValidator(card.taxNumber));
+      errorList.push(Validators.nameValidator(card.name, language.validators));
+      errorList.push(Validators.postalCodeValidator(card.postalCode, language.validators));
+      errorList.push(Validators.phoneValidator(card.phone, language.validators));
+      errorList.push(Validators.websiteValidator(card.website, language.validators));
+      errorList.push(Validators.emailValidator(card.email, language.validators));
+      errorList.push(Validators.taxNumberValidator(card.taxNumber, language.validators));
       if (errorList.flat().length) {
         setError(errorList.flat());
         return 'Error';

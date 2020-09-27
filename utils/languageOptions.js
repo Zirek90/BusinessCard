@@ -44,6 +44,29 @@ export const LANGUAGE_OPTIONS = {
             "success_title": "Success",
             "success_content": "Business card was removed"
         },
+        "validators": {
+            "name": {
+                "no_name": "Please write down a name",
+                "no_enough_of_characters": "Name must have at least 3 characters"
+            },
+            "postal_code": {
+                "no_enough_of_characters": "Postal code must have between 5 to 6 characters",
+                "wrong_character": "Postal code must include only numbers and dash"
+            },
+            "phone": {
+                "no_enough_of_characters": "Phone number must have at least 6 characters",
+                "wrong_character": "Phone number must include only numbers",
+            },
+            "website": {
+                "wrong_character": "Please write website without http/https/www"
+            },
+            "email": {
+                "wrong_character": "Email doesn't have proper format"
+            },
+            "tax_number": {
+                "no_enough_of_characters": "Tax Number must have at least 10 characters"
+            }
+        }
     },
 
     "POLISH": {
@@ -91,5 +114,28 @@ export const LANGUAGE_OPTIONS = {
             "success_title": "Sukces",
             "success_content": "Wizytówka została usunięta"
         },
+        "validators": {
+            "name": {
+                "no_name": "Prosze wpisac nazwe",
+                "no_enough_of_characters": "Nazwa musi mieć co najmniej 3 znaki"
+            },
+            "postal_code": {
+                "no_enough_of_characters": "Kod pocztowy musi mieć pomiędzy 5 a 6 znaków",
+                "wrong_character": "Kod pocztowy powinien zawierać tylko liczby i myślnik"
+            },
+            "phone": {
+                "no_enough_of_characters": "Numer telefonu musi mieć co najmniej 6 znaków",
+                "wrong_character": "Numer telefonu musi zawierać tylko cyfry",
+            },
+            "website": {
+                "wrong_character": "Wpisz strone internetowa z pominięciem http/https/www"
+            },
+            "email": {
+                "wrong_character": "Email nie ma poprawnego formatu"
+            },
+            "tax_number": {
+                "no_enough_of_characters": "NIP musi mieć co najmniej 10 znaki"
+            }
+        }
     } 
 }
